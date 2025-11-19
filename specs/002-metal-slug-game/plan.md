@@ -50,11 +50,10 @@
 
 **Language/Version**: TypeScript 5.0+ / JavaScript ES2020+
 **Primary Dependencies**:
-- 前端: Next.js 14+ (App Router) / React 18+ / HTML5 Canvas API
-- 后端: Nest.js 10+ (如需要) / Next.js API Routes
+- 前端: Vite 5+ / HTML5 Canvas API
 - 游戏开发: Canvas 2D API / Web Audio API / Local Storage API
 **Storage**:
-- 游戏存档: LocalStorage API (客户端) + JSON文件 (服务端)
+- 游戏存档: LocalStorage API (本地存储)
 - 静态资源: 本地文件存储/CDN
 **Testing**:
 - 单元测试: Jest + Testing Library
@@ -162,7 +161,7 @@ docs/
 └── api/                 # API文档(如有)
 ```
 
-**Structure Decision**: 采用轻量级Web游戏结构，重点突出游戏核心逻辑，使用Canvas直接渲染，最小化框架依赖。避免Next.js和Nest.js的重量级架构，采用TypeScript + Vite + HTML5 Canvas的技术栈。
+**Structure Decision**: 采用轻量级Web游戏结构，重点突出游戏核心逻辑，使用Canvas直接渲染，最小化框架依赖。采用TypeScript + Vite + HTML5 Canvas的技术栈，所有功能在前端实现。
 
 ## Phase 0: Research
 

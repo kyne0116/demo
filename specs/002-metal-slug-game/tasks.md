@@ -52,8 +52,8 @@
 - [ ] T013 [P] 实现游戏循环系统 (src/game/systems/GameLoop.ts)
 - [ ] T014 [P] 创建事件系统 (src/game/systems/EventSystem.ts)
 - [ ] T015 实现游戏状态管理器 (src/game/core/GameStateManager.ts)
-- [ ] T016 [P] 实现基础音效系统 (src/services/audio/AudioSystem.ts)
-- [ ] T017 [P] 实现存档系统 (src/services/save/SaveSystem.ts)
+- [ ] T016 [P] 实现基础音效系统（仅SFX射击、爆炸、收集，不含音乐） (src/services/audio/AudioSystem.ts)
+- [ ] T017 [P] 实现LocalStorage本地存档系统 (src/services/save/SaveSystem.ts)
 - [ ] T018 创建基础配置管理器 (src/config/GameConfig.ts)
 
 **Checkpoint**: 所有游戏核心系统就绪，用户故事开发可以开始
@@ -181,7 +181,7 @@
 **用户体验优化**:
 - [ ] T077 实现暂停功能和完善UI
 - [ ] T078 实现成就系统 (src/game/systems/AchievementSystem.ts)
-- [ ] T079 实现音效完善 (射击、爆炸、收集音效)
+- [ ] T079 实现SFX音效完善（射击、爆炸、收集音效）
 - [ ] T080 运行quickstart.md验证和最终测试
 
 **Git操作授权**:
