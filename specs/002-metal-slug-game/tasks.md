@@ -26,13 +26,13 @@
 
 **Purpose**: 项目初始化和基础架构搭建
 
-- [ ] T001 初始化Vite + TypeScript项目配置 (vite.config.ts, tsconfig.json)
-- [ ] T002 创建项目目录结构 (按轻量级游戏架构)
-- [ ] T003 [P] 配置ESLint和Prettier代码规范工具
-- [ ] T004 [P] 设置Jest单元测试框架配置
-- [ ] T005 配置Cypress端到端测试框架
-- [ ] T006 创建基础HTML页面和Canvas元素 (public/index.html)
-- [ ] T007 配置游戏资源目录 (public/assets/images, sounds, data)
+- [X] T001 初始化Vite + TypeScript项目配置 (vite.config.ts, tsconfig.json)
+- [X] T002 创建项目目录结构 (按轻量级游戏架构)
+- [X] T003 [P] 配置ESLint和Prettier代码规范工具
+- [X] T004 [P] 设置Jest单元测试框架配置
+- [X] T005 配置Cypress端到端测试框架
+- [X] T006 创建基础HTML页面和Canvas元素 (public/index.html)
+- [X] T007 配置游戏资源目录 (public/assets/images, sounds, data)
 
 **Checkpoint**: 项目环境搭建完成，可以开始核心开发
 
@@ -44,17 +44,17 @@
 
 **⚠️ CRITICAL**: 在用户故事实现前必须完成此阶段
 
-- [ ] T008 实现基础类型定义 (src/types/game.ts)
-- [ ] T009 [P] 创建Vector2和Math工具类 (src/utils/math.ts)
-- [ ] T010 [P] 实现输入系统基础框架 (src/services/input/InputManager.ts)
-- [ ] T011 [P] 实现物理系统核心类 (src/game/systems/PhysicsSystem.ts)
-- [ ] T012 [P] 创建渲染系统基础框架 (src/game/systems/RenderSystem.ts)
-- [ ] T013 [P] 实现游戏循环系统 (src/game/systems/GameLoop.ts)
-- [ ] T014 [P] 创建事件系统 (src/game/systems/EventSystem.ts)
-- [ ] T015 实现游戏状态管理器 (src/game/core/GameStateManager.ts)
-- [ ] T016 [P] 实现基础音效系统（仅SFX射击、爆炸、收集，不含音乐） (src/services/audio/AudioSystem.ts)
-- [ ] T017 [P] 实现LocalStorage本地存档系统 (src/services/save/SaveSystem.ts)
-- [ ] T018 创建基础配置管理器 (src/config/GameConfig.ts)
+- [X] T008 实现基础类型定义 (src/types/game.ts)
+- [X] T009 [P] 创建Vector2和Math工具类 (src/utils/math.ts)
+- [X] T010 [P] 实现输入系统基础框架 (src/services/input/InputManager.ts)
+- [X] T011 [P] 实现物理系统核心类 (src/game/systems/PhysicsSystem.ts)
+- [X] T012 [P] 创建渲染系统基础框架 (src/game/systems/RenderSystem.ts)
+- [X] T013 [P] 实现游戏循环系统 (src/game/systems/GameLoop.ts)
+- [X] T014 [P] 创建事件系统 (src/game/systems/EventSystem.ts) - 使用EventEmitter实现
+- [X] T015 实现游戏状态管理器 (src/game/core/GameStateManager.ts)
+- [X] T016 [P] 实现基础音效系统（仅SFX射击、爆炸、收集，不含音乐） (src/services/audio/AudioSystem.ts)
+- [X] T017 [P] 实现LocalStorage本地存档系统 (src/services/save/SaveSystem.ts)
+- [X] T018 创建基础配置管理器 (src/config/GameConfig.ts)
 
 **Checkpoint**: 所有游戏核心系统就绪，用户故事开发可以开始
 
