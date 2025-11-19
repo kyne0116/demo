@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>合金弹头风格2D射击游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        #gameCanvas {
+            display: block;
+            background: #1a1a2e;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+
+        #gameUI {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="gameUI"></div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+
+    <!-- 功能测试脚本 -->
+    <script>
+    function gameTest() {
+      console.log('=== 合金弹头游戏功能测试 ===');
+
+      // 检查Canvas是否存在
+      const canvas = document.getElementById('gameCanvas');
+      if (canvas) {
+        console.log('✓ Canvas元素存在 - 尺寸: ' + canvas.width + 'x' + canvas.height);
+      } else {
+        console.log('✗ Canvas元素不存在');
+        return;
+      }
+
+      // 检查全局游戏对象
+      if (window.game) {
+        console.log('✓ 游戏对象已创建');
+      } else {
+        console.log('✗ 游戏对象未找到');
+      }
+
+      // 检查游戏容器
+      const container = document.getElementById('game-container');
+      if (container) {
+        console.log('✓ 游戏容器存在');
+      }
+
+      console.log('=== 测试完成 ===');
+    }
+    </script>
+</body>
+</html>
