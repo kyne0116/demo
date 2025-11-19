@@ -150,12 +150,20 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
-- [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
-- [ ] TXXX Security hardening
-- [ ] TXXX Run quickstart.md validation
+**文档同步约束（宪法第十一条）**:
+- [ ] TXXX 在custom-features/变更日志.md中记录所有定制化功能
+- [ ] TXXX [P] 同步更新相关文档（README、API文档等）
+- [ ] TXXX 验证代码和文档在同一次提交中更新
+
+**质量优化**:
+- [ ] TXXX 代码清理和重构（最简代码原则）
+- [ ] TXXX 性能优化（确保跨所有用户故事）
+- [ ] TXXX [P] 补充单元测试覆盖
+- [ ] TXXX 安全性强化
+- [ ] TXXX 运行quickstart.md验证
+
+**Git操作授权**:
+- [ ] TXXX 确认所有代码变更都已获得用户授权
 
 ---
 
@@ -178,11 +186,20 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Within Each User Story
 
-- Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
-- Core implementation before integration
-- Story complete before moving to next priority
+**测试驱动开发约束（宪法第八条）**:
+- 单元测试（如果包含）必须在实现前编写并确保失败
+- 集成测试必须在每个MVP单元完成后立即运行
+- 测试文件使用中文注释和描述
+
+**实现顺序**:
+- 模型创建（Models）→ 服务层（Services）→ 接口层（Endpoints）
+- 核心实现 → 集成测试 → 质量验证
+- 每个故事完成后必须能独立运行
+
+**中文使用约束（宪法第三条）**:
+- 所有任务描述使用中文
+- 测试用例和注释使用中文
+- 变更日志使用中文记录
 
 ### Parallel Opportunities
 

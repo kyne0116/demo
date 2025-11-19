@@ -30,8 +30,8 @@
 
 **Acceptance Scenarios**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **Given** [初始状态], **When** [执行操作], **Then** [期望结果]
+2. **Given** [初始状态], **When** [执行操作], **Then** [期望结果]
 
 ---
 
@@ -45,7 +45,7 @@
 
 **Acceptance Scenarios**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **Given** [初始状态], **When** [执行操作], **Then** [期望结果]
 
 ---
 
@@ -59,7 +59,7 @@
 
 **Acceptance Scenarios**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **Given** [初始状态], **When** [执行操作], **Then** [期望结果]
 
 ---
 
@@ -72,8 +72,17 @@
   Fill them out with the right edge cases.
 -->
 
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+- 边界条件 [boundary condition] 下系统如何处理？
+- 错误场景 [error scenario] 下系统如何响应？
+
+### 文档同步检查
+
+**变更日志记录（宪法第九条）**:
+- [ ] 确认所有定制化功能将在custom-features/变更日志.md中记录
+- [ ] 确认开发前将查阅相关模块的变更日志（宪法第十条）
+
+**代码文档同步（宪法第十一条）**:
+- [ ] 确认代码变更和文档更新将在同一次提交中完成
 
 ## Requirements *(mandatory)*
 

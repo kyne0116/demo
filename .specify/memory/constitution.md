@@ -1,50 +1,112 @@
-# [PROJECT_NAME] Constitution
+<!--
+Sync Impact Report
+==================
+
+Version Change: None → 1.0.0 (新建立)
+Modified Principles: 无（首次建立）
+Added Sections:
+- 强制约束 (3条)
+- 开发原则 (5条)
+- 文档规范 (3条)
+- 开发工作流 (新增)
+- 治理规则 (新增)
+
+Removed Sections: 无
+
+Templates Updated:
+✅ .specify/templates/plan-template.md - 更新Constitution Check部分
+✅ .specify/templates/tasks-template.md - 增加中文约束和文档规范
+✅ .specify/templates/spec-template.md - 更新验收标准为中文，添加文档同步检查
+
+Follow-up TODOs:
+- 无
+
+所有占位符已替换为具体内容，宪法已完全生效。
+-->
+
+# Demo项目宪法
 <!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
 
-## Core Principles
+## 强制约束
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Git操作授权约束 (非协商约束)
+所有Git操作（git add/commit/push/merge等）必须获得用户明确授权。禁止任何未经授权的版本控制操作，确保代码安全性和用户控制权。
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. 开发环境兼容性约束
+禁止使用Windows语法。在Git Bash环境下必须使用/dev/null而非nul，避免创建无法删除的文件，确保跨平台兼容性。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. 语言使用约束
+始终使用中文与用户沟通交流，所有产出的文档使用中文，代码注释也使用中文。确保团队协作的一致性和可理解性。
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+## 开发原则
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### IV. 无历史包袱原则
+无需向后兼容、无需迁移脚本、无需保留旧代码。保持代码库清洁，允许重大重构和技术栈升级，避免技术债务积累。
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### V. 最少文件原则
+避免创建不必要的文件、抽象层、工具类。每个文件和组件都必须有明确的业务价值，坚持"简洁至上"的设计理念。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VI. 最全功能原则
+实现完整功能，不偷工减料。确保所有承诺的功能都能正常工作，避免部分实现或临时解决方案影响用户体验。
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### VII. 最简代码原则
+使用最直接的实现方式，积极重构删除冗余。优先选择简单、可读性强的解决方案，避免过度工程化和复杂的设计模式。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### VIII. 测试驱动开发原则 (非协商约束)
+以函数/方法为最小测试单元，及时执行单元测试。每完成一个MVP单元，必须立即运行集成测试。遵循"测试先行，代码实现"的工作流程。
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+## 文档规范
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### IX. 变更记录规范
+所有定制化功能必须在custom-features/变更日志.md中记录。建立完整的变更追溯机制，确保历史变更的可追溯性。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+### X. 变更日志优先原则
+实现功能前先查看对应模块的变更日志。优先通过查阅变更日志了解历史决策和已有实现，避免重复劳动和冲突。
+
+### XI. 代码文档同步原则
+代码变更和文档更新必须在同一次提交提交。确保代码和文档的同步性，避免文档滞后导致的理解偏差。
+
+## 开发工作流
+
+### 项目结构规范
+采用标准化的项目结构：
+- **源代码**: src/ 目录
+- **测试**: tests/ 目录，包含unit/、integration/、contract/子目录
+- **文档**: docs/ 目录
+- **配置**: 配置文件集中在项目根目录
+
+### 质量门禁
+所有功能开发必须通过以下质量检查：
+1. 单元测试通过
+2. 集成测试通过
+3. 代码风格检查通过
+4. 文档同步更新
+5. 变更日志记录
+
+### 版本管理
+采用语义化版本管理：
+- **MAJOR**: 破坏性变更或重大功能更新
+- **MINOR**: 新功能添加，向后兼容
+- **PATCH**: Bug修复，向后兼容
+
+## 治理规则
+
+### 宪法优先原则
+本宪法优于所有其他开发实践和工具配置。任何开发决策都必须符合宪法规定。
+
+### 修订程序
+宪法修订需要：
+1. 明确修订内容和原因
+2. 版本号递增（遵循语义化版本规则）
+3. 记录修订日期
+4. 更新相关模板和工具配置
+
+### 合规性检查
+所有代码评审必须验证以下合规性：
+- Git操作是否获得授权
+- 代码和文档是否使用中文
+- 测试是否充分覆盖
+- 变更是否记录完整
+
+**版本**: 1.0.0 | **批准日期**: 2025-11-19 | **最后修订**: 2025-11-19
 <!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
