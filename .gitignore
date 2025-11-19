@@ -1,0 +1,145 @@
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Vite 构建工具
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# 构建输出目录
+dist/
+build/
+out/
+
+# 运行时目录
+.nuxt/
+.next/
+.turbo/
+
+# 包管理器锁文件（可选，取决于你的团队）
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 编辑器和 IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 运行时数据
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# 覆盖率报告
+coverage/
+*.lcov
+.nyc_output/
+
+# 缓存目录
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# 临时目录
+tmp/
+temp/
+.tmp/
+
+# 调试文件
+*.tgz
+*.tar.gz
+
+# 测试目录
+__tests__/coverage/
+
+# TypeScript 构建输出
+*.tsbuildinfo
+
+# 辅助文件
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# 可选的依赖锁文件
+# 如果你想锁定依赖版本，可以保留这些文件
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# 本地开发配置
+.env.development
+.env.staging
+.env.production
+
+# 编辑器备份文件
+*~
+*.tmp
+*.bak
+*.orig
+
+# 本地数据库
+*.db
+*.sqlite
+*.sqlite3
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+
+# 文档生成目录
+docs/
+storybook-static/
+
+# Webpack 相关
+.webpack/
+
+# Rollup 相关
+.rollup.cache/
+
+# Jest 相关
+jest.config.js.bak
+
+# Cypress 相关
+cypress/videos/
+cypress/screenshots/
+
+# Playwright 相关
+test-results/
+playwright-report/
+playwright/.cache/
