@@ -10,12 +10,16 @@
 ## Technical Context
 
 **Language/Version**: TypeScript 5.x + Node.js 18+
-**Primary Dependencies**: 
+**Primary Dependencies**:
 - **Backend**: NestJS 10.x (TypeScript框架)
 - **Frontend**: Next.js 14.x (React框架)
-- **Database**: PostgreSQL + TypeORM
+- **Database**: MySQL + TypeORM
 - **API**: RESTful API设计
-**Storage**: PostgreSQL数据库存储，Redis缓存（可选）
+**Storage**: MySQL数据库存储，基于环境变量配置，Redis缓存（可选）
+**Database Configuration**:
+- URL: ${CP_DATABASE_URL:jdbc:mysql://localhost:3306/copyright?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&useAffectedRows=true}
+- Username: ${CP_DATABASE_USERNAME:root}
+- Password: ${CP_DATABASE_PASSWORD:}
 **Testing**: Jest + Testing Library (前后端统一测试)
 **Target Platform**: Web应用，支持桌面端和移动端浏览器
 **Project Type**: web (前后端分离架构)
@@ -148,7 +152,7 @@ docs/                    # 项目文档
    - 状态管理和API调用
 
 3. **数据库设计最佳实践**
-   - PostgreSQL在NestJS中的配置
+   - MySQL在NestJS中的配置
    - TypeORM实体设计模式
    - 数据迁移和种子数据
    - 性能优化策略
@@ -194,7 +198,7 @@ docs/                    # 项目文档
 
 ### ✅ 已完成
 - [x] 技术架构设计 (NestJS + Next.js)
-- [x] 数据库模型设计 (PostgreSQL + TypeORM)
+- [x] 数据库模型设计 (MySQL + TypeORM)
 - [x] API契约设计 (RESTful API)
 - [x] 快速开始指南
 - [x] 项目结构规划

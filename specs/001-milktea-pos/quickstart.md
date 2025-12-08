@@ -12,7 +12,7 @@
 
 - **前端**: Next.js 14 + TypeScript + Tailwind CSS
 - **后端**: NestJS + TypeScript + TypeORM
-- **数据库**: PostgreSQL
+- **数据库**: MySQL
 - **认证**: JWT
 - **测试**: Jest + Testing Library
 - **构建**: Vite (前端) + Webpack (后端)
@@ -20,7 +20,7 @@
 ## 环境要求
 
 - Node.js 18.0.0+
-- PostgreSQL 14+
+- MySQL 8.0+
 - Git 2.30+
 
 ## 本地开发环境搭建
@@ -49,28 +49,28 @@ npm install
 
 ### 3. 数据库配置
 
-#### 安装PostgreSQL
+#### 安装MySQL
 ```bash
 # Windows (使用Chocolatey)
-choco install postgresql
+choco install mysql
 
 # macOS (使用Homebrew)
-brew install postgresql
+brew install mysql
 
 # Ubuntu/Debian
-sudo apt-get install postgresql-14
+sudo apt-get install mysql-server
 ```
 
 #### 创建数据库
 ```bash
-# 连接到PostgreSQL
-psql -U postgres
+# 连接到MySQL
+mysql -u root -p
 
 # 创建数据库
-CREATE DATABASE milktea_pos;
-CREATE USER milktea_user WITH ENCRYPTED PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE milktea_pos TO milktea_user;
-\q
+CREATE DATABASE copyright CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'copyright'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON copyright.* TO 'copyright'@'localhost';
+FLUSH PRIVILEGES;
 ```
 
 ### 4. 环境变量配置
@@ -78,11 +78,9 @@ GRANT ALL PRIVILEGES ON DATABASE milktea_pos TO milktea_user;
 #### 后端环境变量 (.env)
 ```bash
 # backend/.env
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=milktea_pos
-DATABASE_USERNAME=milktea_user
-DATABASE_PASSWORD=your_password
+CP_DATABASE_URL=jdbc:mysql://localhost:3306/copyright?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&useAffectedRows=true
+CP_DATABASE_USERNAME=copyright
+CP_DATABASE_PASSWORD=your_password
 
 JWT_SECRET=your-super-secret-jwt-key
 JWT_EXPIRES_IN=7d
@@ -457,14 +455,14 @@ docker run -p 3000:3000 milktea-pos
 ```bash
 # 环境变量
 NODE_ENV=production
-DATABASE_URL=postgresql://...
+DATABASE_URL=jdbc:mysql://localhost:3306/copyright?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true&useAffectedRows=true
 JWT_SECRET=production-secret
 ```
 
 ## 常见问题
 
 ### Q: 数据库连接失败？
-A: 检查PostgreSQL服务状态和连接配置，确保数据库存在且用户权限正确。
+A: 检查MySQL服务状态和连接配置，确保数据库存在且用户权限正确。
 
 ### Q: JWT Token验证失败？
 A: 检查JWT_SECRET配置和token格式，确保前后端时间同步。

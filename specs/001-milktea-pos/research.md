@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-基于NestJS和Next.js技术栈的调研结果，确定了最佳的技术实现方案。采用前后端分离架构，使用TypeScript确保类型安全，PostgreSQL作为主数据库，TypeORM作为ORM工具。系统设计遵循微服务理念的模块化架构，确保可维护性和可扩展性。
+基于NestJS和Next.js技术栈的调研结果，确定了最佳的技术实现方案。采用前后端分离架构，使用TypeScript确保类型安全，MySQL作为主数据库，TypeORM作为ORM工具。系统设计遵循微服务理念的模块化架构，确保可维护性和可扩展性。
 
 ## Phase 0: Research Findings
 
@@ -57,8 +57,24 @@ app/
 
 ### 3. Database Design Patterns
 
-**Decision**: PostgreSQL + TypeORM + Repository Pattern
-**Rationale**: 功能强大，TypeORM提供优秀的类型安全
+**Decision**: MySQL + TypeORM + Repository Pattern
+**Rationale**: 性能稳定，TypeORM提供优秀的类型支持，适合中小型业务
+
+#### 数据库配置
+```typescript
+TypeOrmModule.forRoot({
+  type: 'mysql',
+  host: process.env.CP_DATABASE_URL || 'localhost',
+  port: 3306,
+  username: process.env.CP_DATABASE_USERNAME || 'root',
+  password: process.env.CP_DATABASE_PASSWORD || '',
+  database: 'copyright',
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  synchronize: false,
+  logging: true,
+  timezone: 'Asia/Shanghai',
+})
+```
 
 #### 实体设计
 ```typescript
@@ -194,7 +210,7 @@ export class ProductsController {
 |------|----------|------|
 | 后端框架 | NestJS | 模块化架构，依赖注入，TypeScript支持 |
 | 前端框架 | Next.js 14 | App Router，SSR，优秀性能 |
-| 数据库 | PostgreSQL | 功能强大，支持复杂查询 |
+| 数据库 | MySQL | 性能稳定，适合中小型业务 |
 | ORM | TypeORM | 类型安全，迁移支持 |
 | 认证 | JWT | 无状态，扩展性好 |
 | 测试 | Jest + Testing Library | 完整测试覆盖 |

@@ -40,7 +40,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 Setup PostgreSQL database connection and TypeORM configuration
+- [ ] T010 Setup MySQL database connection and TypeORM configuration
 - [ ] T011 Create database migration framework with initial schema
 - [ ] T012 [P] Implement JWT authentication service and middleware
 - [ ] T013 [P] Setup API routing structure with validation and error handling
