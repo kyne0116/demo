@@ -27,10 +27,12 @@
 - [ ] T001 [P] Create backend project structure (NestJS modules: auth, users, products, orders, inventory, members, reports)
 - [ ] T002 [P] Create frontend project structure (Next.js App Router: app, components, lib, types)
 - [ ] T003 [P] Create shared project structure (shared types and utilities)
-- [ ] T004 [P] Initialize NestJS backend with TypeScript configuration
-- [ ] T005 [P] Initialize Next.js frontend with TypeScript and Tailwind CSS
-- [ ] T006 [P] Configure linting and formatting tools (ESLint, Prettier)
-- [ ] T007 [P] Setup Jest testing framework for both frontend and backend
+- [ ] T004 [P] Setup shared TypeScript type definitions in shared/types/
+- [ ] T005 [P] Setup shared utility functions in shared/utils/
+- [ ] T006 [P] Initialize NestJS backend with TypeScript configuration
+- [ ] T007 [P] Initialize Next.js frontend with TypeScript and Tailwind CSS
+- [ ] T008 [P] Configure linting and formatting tools (ESLint, Prettier)
+- [ ] T009 [P] Setup Jest testing framework for both frontend and backend
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
@@ -38,14 +40,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 Setup PostgreSQL database connection and TypeORM configuration
-- [ ] T009 Create database migration framework with initial schema
-- [ ] T010 [P] Implement JWT authentication service and middleware
-- [ ] T011 [P] Setup API routing structure with validation and error handling
-- [ ] T012 [P] Create base User entity and repository pattern
-- [ ] T013 [P] Implement logging infrastructure and error handling
-- [ ] T014 [P] Setup environment configuration management
-- [ ] T015 [P] Create shared TypeScript types and interfaces
+- [ ] T010 Setup PostgreSQL database connection and TypeORM configuration
+- [ ] T011 Create database migration framework with initial schema
+- [ ] T012 [P] Implement JWT authentication service and middleware
+- [ ] T013 [P] Setup API routing structure with validation and error handling
+- [ ] T014 [P] Create base User entity and repository pattern
+- [ ] T015 [P] Implement logging infrastructure and error handling
+- [ ] T016 [P] Setup environment configuration management
+- [ ] T017 [P] Create shared TypeScript types and interfaces
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -61,26 +63,26 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T016 [P] [US1] Contract test for GET /api/products endpoint in tests/contract/products.test.ts
-- [ ] T017 [P] [US1] Contract test for POST /api/orders endpoint in tests/contract/orders.test.ts
-- [ ] T018 [P] [US1] Integration test for customer checkout flow in tests/integration/customer-checkout.test.ts
-- [ ] T019 [P] [US1] Unit test for order calculation service in tests/unit/orders/OrderCalculationService.test.ts
+- [ ] T018 [P] [US1] Contract test for GET /api/products endpoint in tests/contract/products.test.ts
+- [ ] T019 [P] [US1] Contract test for POST /api/orders endpoint in tests/contract/orders.test.ts
+- [ ] T020 [P] [US1] Integration test for customer checkout flow in tests/integration/customer-checkout.test.ts
+- [ ] T021 [P] [US1] Unit test for order calculation service in tests/unit/orders/OrderCalculationService.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Create Product entity with TypeORM decorators in backend/src/modules/products/entities/Product.ts
-- [ ] T021 [P] [US1] Create Category entity with TypeORM decorators in backend/src/modules/products/entities/Category.ts
-- [ ] T022 [P] [US1] Create Order entity with TypeORM decorators in backend/src/modules/orders/entities/Order.ts
-- [ ] T023 [P] [US1] Create OrderItem entity with TypeORM decorators in backend/src/modules/orders/entities/OrderItem.ts
-- [ ] T024 [US1] Implement ProductsService with CRUD operations in backend/src/modules/products/products.service.ts
-- [ ] T025 [US1] Implement OrdersService with order creation and calculation in backend/src/modules/orders/orders.service.ts
-- [ ] T026 [US1] Implement ProductsController with REST endpoints in backend/src/modules/products/products.controller.ts
-- [ ] T027 [US1] Implement OrdersController with REST endpoints in backend/src/modules/orders/orders.controller.ts
-- [ ] T028 [US1] Create ProductList component in frontend/src/components/ProductList.tsx
-- [ ] T029 [US1] Create ShoppingCart component in frontend/src/components/ShoppingCart.tsx
-- [ ] T030 [US1] Create CheckoutPage in frontend/src/app/checkout/page.tsx
-- [ ] T031 [US1] Implement API client utilities in frontend/src/lib/api.ts
-- [ ] T032 [US1] Add validation schemas and error handling for US1 endpoints
+- [ ] T022 [P] [US1] Create Product entity with TypeORM decorators in backend/src/modules/products/entities/Product.ts
+- [ ] T023 [P] [US1] Create Category entity with TypeORM decorators in backend/src/modules/products/entities/Category.ts
+- [ ] T024 [P] [US1] Create Order entity with TypeORM decorators in backend/src/modules/orders/entities/Order.ts
+- [ ] T025 [P] [US1] Create OrderItem entity with TypeORM decorators in backend/src/modules/orders/entities/OrderItem.ts
+- [ ] T026 [US1] Implement ProductsService with CRUD operations in backend/src/modules/products/products.service.ts
+- [ ] T027 [US1] Implement OrdersService with order creation and calculation in backend/src/modules/orders/orders.service.ts
+- [ ] T028 [US1] Implement ProductsController with REST endpoints in backend/src/modules/products/products.controller.ts
+- [ ] T029 [US1] Implement OrdersController with REST endpoints in backend/src/modules/orders/orders.controller.ts
+- [ ] T030 [US1] Create ProductList component in frontend/src/components/ProductList.tsx
+- [ ] T031 [US1] Create ShoppingCart component in frontend/src/components/ShoppingCart.tsx
+- [ ] T032 [US1] Create CheckoutPage in frontend/src/app/checkout/page.tsx
+- [ ] T033 [US1] Implement API client utilities in frontend/src/lib/api.ts
+- [ ] T034 [US1] Add validation schemas and error handling for US1 endpoints
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -96,21 +98,23 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T033 [P] [US2] Contract test for POST /api/members endpoint in tests/contract/members.test.ts
-- [ ] T034 [P] [US2] Contract test for GET /api/members/:id endpoint in tests/contract/members.test.ts
-- [ ] T035 [P] [US2] Integration test for member registration and point management in tests/integration/member-management.test.ts
-- [ ] T036 [P] [US2] Unit test for MemberService with point calculation in tests/unit/members/MemberService.test.ts
+- [ ] T035 [P] [US2] Contract test for POST /api/members endpoint in tests/contract/members.test.ts
+- [ ] T036 [P] [US2] Contract test for GET /api/members/:id endpoint in tests/contract/members.test.ts
+- [ ] T037 [P] [US2] Integration test for member registration and point management in tests/integration/member-management.test.ts
+- [ ] T038 [P] [US2] Unit test for MemberService with point calculation in tests/unit/members/MemberService.test.ts
+- [ ] T039 [P] [US2] Unit test for MemberRegistrationService in tests/unit/members/MemberRegistrationService.test.ts
+- [ ] T040 [P] [US2] Unit test for PointCalculationService in tests/unit/members/PointCalculationService.test.ts
 
 ### Implementation for User Story 2
 
-- [ ] T037 [P] [US2] Create MemberProfile entity with TypeORM decorators in backend/src/modules/members/entities/MemberProfile.ts
-- [ ] T038 [US2] Implement MembersService with registration and point management in backend/src/modules/members/members.service.ts
-- [ ] T039 [US2] Implement MembersController with REST endpoints in backend/src/modules/members/members.controller.ts
-- [ ] T040 [US2] Update OrdersService to integrate with member point calculation in backend/src/modules/orders/orders.service.ts
-- [ ] T041 [US2] Create MemberRegistrationPage in frontend/src/app/members/register/page.tsx
-- [ ] T042 [US2] Create MemberProfilePage in frontend/src/app/members/profile/page.tsx
-- [ ] T043 [US2] Create MemberCard component with point display in frontend/src/components/MemberCard.tsx
-- [ ] T044 [US2] Update CheckoutPage to integrate member discount logic in frontend/src/app/checkout/page.tsx
+- [ ] T041 [P] [US2] Create MemberProfile entity with TypeORM decorators in backend/src/modules/members/entities/MemberProfile.ts
+- [ ] T042 [US2] Implement MembersService with registration and point management in backend/src/modules/members/members.service.ts
+- [ ] T043 [US2] Implement MembersController with REST endpoints in backend/src/modules/members/members.controller.ts
+- [ ] T044 [US2] Update OrdersService to integrate with member point calculation in backend/src/modules/orders/orders.service.ts
+- [ ] T045 [US2] Create MemberRegistrationPage in frontend/src/app/members/register/page.tsx
+- [ ] T046 [US2] Create MemberProfilePage in frontend/src/app/members/profile/page.tsx
+- [ ] T047 [US2] Create MemberCard component with point display in frontend/src/components/MemberCard.tsx
+- [ ] T048 [US2] Update CheckoutPage to integrate member discount logic in frontend/src/app/checkout/page.tsx
 
 **Checkpoint**: At this point, User Story 2 should be fully functional and testable independently
 
@@ -126,22 +130,24 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T045 [P] [US3] Contract test for staff management endpoints in tests/contract/staff-management.test.ts
-- [ ] T046 [P] [US3] Contract test for authorization guards in tests/contract/auth-guards.test.ts
-- [ ] T047 [P] [US3] Integration test for role-based access control in tests/integration/rbac.test.ts
-- [ ] T048 [P] [US3] Unit test for PermissionService in tests/unit/auth/PermissionService.test.ts
+- [ ] T049 [P] [US3] Contract test for staff management endpoints in tests/contract/staff-management.test.ts
+- [ ] T050 [P] [US3] Contract test for authorization guards in tests/contract/auth-guards.test.ts
+- [ ] T051 [P] [US3] Integration test for role-based access control in tests/integration/rbac.test.ts
+- [ ] T052 [P] [US3] Unit test for PermissionService in tests/unit/auth/PermissionService.test.ts
+- [ ] T053 [P] [US3] Unit test for RolesGuard in tests/unit/auth/RolesGuard.test.ts
+- [ ] T054 [P] [US3] Unit test for AuditLogService in tests/unit/users/AuditLogService.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T049 [P] [US3] Update User entity to include role-based permissions in backend/src/modules/users/entities/User.ts
-- [ ] T050 [P] [US3] Create OperationLog entity for audit trail in backend/src/modules/users/entities/OperationLog.ts
-- [ ] T051 [P] [US3] Implement RolesGuard for authorization in backend/src/common/guards/roles.guard.ts
-- [ ] T052 [P] [US3] Implement PermissionService for role management in backend/src/modules/auth/permission.service.ts
-- [ ] T053 [P] [US3] Implement UsersService with role-based operations in backend/src/modules/users/users.service.ts
-- [ ] T054 [P] [US3] Implement UsersController with permission checks in backend/src/modules/users/users.controller.ts
-- [ ] T055 [P] [US3] Create AdminDashboardPage in frontend/src/app/admin/dashboard/page.tsx
-- [ ] T056 [P] [US3] Create StaffManagementPage in frontend/src/app/admin/staff/page.tsx
-- [ ] T057 [P] [US3] Create PermissionGuard component for UI in frontend/src/components/PermissionGuard.tsx
+- [ ] T055 [P] [US3] Update User entity to include role-based permissions in backend/src/modules/users/entities/User.ts
+- [ ] T056 [P] [US3] Create OperationLog entity for audit trail in backend/src/modules/users/entities/OperationLog.ts
+- [ ] T057 [P] [US3] Implement RolesGuard for authorization in backend/src/common/guards/roles.guard.ts
+- [ ] T058 [P] [US3] Implement PermissionService for role management in backend/src/modules/auth/permission.service.ts
+- [ ] T059 [P] [US3] Implement UsersService with role-based operations in backend/src/modules/users/users.service.ts
+- [ ] T060 [P] [US3] Implement UsersController with permission checks in backend/src/modules/users/users.controller.ts
+- [ ] T061 [P] [US3] Create AdminDashboardPage in frontend/src/app/admin/dashboard/page.tsx
+- [ ] T062 [P] [US3] Create StaffManagementPage in frontend/src/app/admin/staff/page.tsx
+- [ ] T063 [P] [US3] Create PermissionGuard component for UI in frontend/src/components/PermissionGuard.tsx
 
 **Checkpoint**: At this point, User Story 3 should be fully functional and testable independently
 
@@ -157,22 +163,28 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T058 [P] [US4] Contract test for inventory management endpoints in tests/contract/inventory.test.ts
-- [ ] T059 [P] [US4] Contract test for product management endpoints in tests/contract/products-admin.test.ts
-- [ ] T060 [P] [US4] Integration test for inventory tracking and stock deduction in tests/integration/inventory-tracking.test.ts
-- [ ] T061 [P] [US4] Unit test for InventoryService with automatic stock deduction in tests/unit/inventory/InventoryService.test.ts
+- [ ] T064 [P] [US4] Contract test for inventory management endpoints in tests/contract/inventory.test.ts
+- [ ] T065 [P] [US4] Contract test for product management endpoints in tests/contract/products-admin.test.ts
+- [ ] T066 [P] [US4] Integration test for inventory tracking and stock deduction in tests/integration/inventory-tracking.test.ts
+- [ ] T067 [P] [US4] Unit test for InventoryService with automatic stock deduction in tests/unit/inventory/InventoryService.test.ts
+- [ ] T068 [P] [US4] Unit test for InventoryAlertService in tests/unit/inventory/InventoryAlertService.test.ts
+- [ ] T069 [P] [US4] Unit test for ProductRecipeService in tests/unit/products/ProductRecipeService.test.ts
 
 ### Implementation for User Story 4
 
-- [ ] T062 [P] [US4] Create InventoryItem entity with TypeORM decorators in backend/src/modules/inventory/entities/InventoryItem.ts
-- [ ] T063 [P] [US4] Create ProductRecipe entity for product ingredient mapping in backend/src/modules/products/entities/ProductRecipe.ts
-- [ ] T064 [P] [US4] Implement InventoryService with stock tracking and alerts in backend/src/modules/inventory/inventory.service.ts
-- [ ] T065 [P] [US4] Implement InventoryController with REST endpoints in backend/src/modules/inventory/inventory.controller.ts
-- [ ] T066 [P] [US4] Update ProductsService to integrate with inventory management in backend/src/modules/products/products.service.ts
-- [ ] T067 [P] [US4] Create ProductManagementPage in frontend/src/app/admin/products/page.tsx
-- [ ] T068 [P] [US4] Create InventoryManagementPage in frontend/src/app/admin/inventory/page.tsx
-- [ ] T069 [P] [US4] Create InventoryAlert component for low stock notifications in frontend/src/components/InventoryAlert.tsx
-- [ ] T070 [P] [US4] Update OrdersService to automatically deduct inventory on order confirmation in backend/src/modules/orders/orders.service.ts
+- [ ] T070 [P] [US4] Create InventoryItem entity with TypeORM decorators in backend/src/modules/inventory/entities/InventoryItem.ts
+- [ ] T071 [P] [US4] Create ProductRecipe entity for product ingredient mapping in backend/src/modules/products/entities/ProductRecipe.ts
+- [ ] T072 [P] [US4] Implement InventoryService with stock tracking and alerts in backend/src/modules/inventory/inventory.service.ts
+- [ ] T073 [P] [US4] Implement InventoryController with REST endpoints in backend/src/modules/inventory/inventory.controller.ts
+- [ ] T074 [P] [US4] Update ProductsService to integrate with inventory management in backend/src/modules/products/products.service.ts
+- [ ] T075 [P] [US4] Create ProductManagementPage in frontend/src/app/admin/products/page.tsx
+- [ ] T076 [P] [US4] Create InventoryManagementPage in frontend/src/app/admin/inventory/page.tsx
+- [ ] T077 [P] [US4] Create InventoryAlert component for low stock notifications in frontend/src/components/InventoryAlert.tsx
+- [ ] T078 [P] [US4] Update OrdersService to automatically deduct inventory on order confirmation in backend/src/modules/orders/orders.service.ts
+- [ ] T079 [P] [US4] Create InventoryAlertService for low stock notifications in backend/src/modules/inventory/inventory-alert.service.ts
+- [ ] T080 [US4] Implement automatic inventory alert system in backend/src/modules/inventory/inventory.service.ts (update T072)
+- [ ] T081 [US4] Create InventoryAlertPage in frontend/src/app/admin/inventory/alerts/page.tsx
+- [ ] T082 [P] [US4] Add real-time inventory monitoring dashboard in frontend/src/components/InventoryMonitor.tsx
 
 **Checkpoint**: At this point, User Story 4 should be fully functional and testable independently
 
@@ -188,17 +200,17 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T071 [P] [P5] Contract test for sales reports endpoint in tests/contract/reports.test.ts
-- [ ] T072 [P] [P5] Contract test for inventory reports endpoint in tests/contract/reports.test.ts
-- [ ] T073 [P] [P5] Integration test for report generation and data accuracy in tests/integration/reports.test.ts
-- [ ] T074 [P] [P5] Unit test for ReportsService with data aggregation in tests/unit/reports/ReportsService.test.ts
+- [ ] T083 [P] [P5] Contract test for sales reports endpoint in tests/contract/reports.test.ts
+- [ ] T084 [P] [P5] Contract test for inventory reports endpoint in tests/contract/reports.test.ts
+- [ ] T085 [P] [P5] Integration test for report generation and data accuracy in tests/integration/reports.test.ts
+- [ ] T086 [P] [P5] Unit test for ReportsService with data aggregation in tests/unit/reports/ReportsService.test.ts
 
 ### Implementation for Reports & Analytics
 
-- [ ] T075 [P] [P5] Implement ReportsService with sales and inventory analytics in backend/src/modules/reports/reports.service.ts
-- [ ] T076 [P] [P5] Implement ReportsController with REST endpoints in backend/src/modules/reports/reports.controller.ts
-- [ ] T077 [P] [P5] Create ReportsDashboardPage in frontend/src/app/admin/reports/page.tsx
-- [ ] T078 [P] [P5] Create SalesChart component with data visualization in frontend/src/components/SalesChart.tsx
+- [ ] T087 [P] [P5] Implement ReportsService with sales and inventory analytics in backend/src/modules/reports/reports.service.ts
+- [ ] T088 [P] [P5] Implement ReportsController with REST endpoints in backend/src/modules/reports/reports.controller.ts
+- [ ] T089 [P] [P5] Create ReportsDashboardPage in frontend/src/app/admin/reports/page.tsx
+- [ ] T090 [P] [P5] Create SalesChart component with data visualization in frontend/src/components/SalesChart.tsx
 
 **Checkpoint**: At this point, Reports & Analytics should be fully functional and testable independently
 
@@ -208,14 +220,14 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T079 [P] Add comprehensive error handling and logging across all modules
-- [ ] T080 [P] Optimize database queries and add proper indexing
-- [ ] T081 [P] Implement API rate limiting and security headers
-- [ ] T082 [P] Add input sanitization and validation across all endpoints
-- [ ] T083 [P] Create seed data script for development and testing
-- [ ] T084 [P] Add API documentation with Swagger/OpenAPI
-- [ ] T085 [P] Implement caching layer for frequently accessed data
-- [ ] T086 [P] Add performance monitoring and metrics collection
+- [ ] T091 [P] Add comprehensive error handling and logging across all modules
+- [ ] T092 [P] Optimize database queries and add proper indexing
+- [ ] T093 [P] Implement API rate limiting and security headers
+- [ ] T094 [P] Add input sanitization and validation across all endpoints
+- [ ] T095 [P] Create seed data script for development and testing
+- [ ] T096 [P] Add API documentation with Swagger/OpenAPI
+- [ ] T097 [P] Implement caching layer for frequently accessed data
+- [ ] T098 [P] Add performance monitoring and metrics collection
 
 ---
 
@@ -224,29 +236,29 @@
 **Purpose**: 确保所有实现符合项目宪法要求
 
 ### 强制约束验证
-- [ ] T087 [P] 验证所有Git操作都有明确授权记录
-- [ ] T088 [P] 确认未使用Windows语法(代码中使用/dev/null)
-- [ ] T089 [P] 验证所有文档和代码注释使用中文
+- [ ] T099 [P] 验证所有Git操作都有明确授权记录
+- [ ] T100 [P] 确认未使用Windows语法(代码中使用/dev/null)
+- [ ] T101 [P] 验证所有文档和代码注释使用中文
 
 ### 开发原则验证
-- [ ] T090 [P] 确认代码遵循最简原则(删除冗余代码和抽象层)
-- [ ] T091 [P] 验证功能实现完整性(无偷工减料)
-- [ ] T092 [P] 确认无历史包袱设计(无向后兼容约束)
+- [ ] T102 [P] 确认代码遵循最简原则(删除冗余代码和抽象层)
+- [ ] T103 [P] 验证功能实现完整性(无偷工减料)
+- [ ] T104 [P] 确认无历史包袱设计(无向后兼容约束)
 
 ### 文档规范验证
-- [ ] T093 [P] 在custom-features/变更日志.md中添加功能变更记录
-- [ ] T094 [P] 验证代码变更与文档更新同步提交
-- [ ] T095 [P] 确认变更记录包含完整要素
+- [ ] T105 [P] 在custom-features/变更日志.md中添加功能变更记录
+- [ ] T106 [P] 验证代码变更与文档更新同步提交
+- [ ] T107 [P] 确认变更记录包含完整要素
 
 ### 变更管理规范验证
-- [ ] T096 [P] 在custom-features/requirements/创建需求文档(如果需要)
-- [ ] T097 [P] 在custom-features/components/创建实现文档
-- [ ] T098 [P] 验证文档命名格式符合规范
+- [ ] T108 [P] 在custom-features/requirements/创建需求文档(如果需要)
+- [ ] T109 [P] 在custom-features/components/创建实现文档
+- [ ] T110 [P] 验证文档命名格式符合规范
 
 ### 质量保证验证
-- [ ] T099 [P] 验证单元测试覆盖所有函数/方法
-- [ ] T100 [P] 执行集成测试验证MVP完整性
-- [ ] T101 [P] 确认每个用户故事独立可测试
+- [ ] T111 [P] 验证单元测试覆盖所有函数/方法
+- [ ] T112 [P] 执行集成测试验证MVP完整性
+- [ ] T113 [P] 确认每个用户故事独立可测试
 
 ---
 
@@ -345,21 +357,21 @@ With multiple developers:
 
 | Phase | User Story | Task Count | Parallel Tasks | Dependencies |
 |-------|------------|------------|----------------|--------------|
-| 1 | Setup | 7 | 7 | None |
+| 1 | Setup | 9 | 9 | None |
 | 2 | Foundational | 8 | 5 | Phase 1 |
 | 3 | US1 - 客户购物结账 | 17 | 12 | Phase 2 |
-| 4 | US2 - 会员信息管理 | 12 | 8 | Phase 2 |
-| 5 | US3 - 店员权限管理 | 13 | 9 | Phase 2 |
-| 6 | US4 - 产品库存管理 | 13 | 8 | Phase 2 |
+| 4 | US2 - 会员信息管理 | 14 | 10 | Phase 2 |
+| 5 | US3 - 店员权限管理 | 15 | 11 | Phase 2 |
+| 6 | US4 - 产品库存管理 | 19 | 14 | Phase 2 |
 | 7 | Reports & Analytics | 8 | 6 | Phase 2 |
 | 8 | Polish & Cross-Cutting | 8 | 8 | Phase 3-7 |
 | 9 | 宪法合规性验证 | 15 | 15 | Phase 3-8 |
-| **Total** | **All Stories** | **101** | **78** | **Sequential** |
+| **Total** | **All Stories** | **113** | **90** | **Sequential** |
 
 ### Key Metrics
-- **Total Tasks**: 101
-- **Parallelizable Tasks**: 78 (77%)
-- **Sequential Dependencies**: 23 (23%)
+- **Total Tasks**: 113
+- **Parallelizable Tasks**: 90 (79.6%)
+- **Sequential Dependencies**: 23 (20.4%)
 - **Estimated Timeline**: 8-12 weeks (depending on team size and parallel execution)
 
 ---
