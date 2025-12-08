@@ -189,8 +189,9 @@ docs/                    # 项目文档
 
 1. **✅ Phase 0 Completed**: Research NestJS/Next.js best practices
 2. **✅ Phase 1 Completed**: Generated data model, API contracts, and quickstart
-3. **Create Tasks**: Generate detailed implementation tasks with `/speckit.tasks`
-4. **Begin Development**: Start with MVP user story implementation
+3. **✅ Phase 2 Completed**: Database configuration updated from PostgreSQL to MySQL
+4. **Create Tasks**: Generate detailed implementation tasks with `/speckit.tasks`
+5. **Begin Development**: Start with MVP user story implementation
 
 **Ready for**: `/speckit.tasks` - Task breakdown and assignment
 
