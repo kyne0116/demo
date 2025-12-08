@@ -31,7 +31,27 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### 强制约束验证
+- [ ] 所有Git操作已获得明确用户授权
+- [ ] 未使用Windows语法(Git Bash环境使用/dev/null而非nul)
+- [ ] 文档和代码注释使用中文
+
+### 开发原则验证
+- [ ] 遵循无历史包袱原则(无需向后兼容)
+- [ ] 遵循最少文件原则(避免不必要的抽象层)
+- [ ] 遵循最简代码原则(使用直接实现方式)
+- [ ] 以函数/方法为最小测试单元设计
+
+### 文档规范验证
+- [ ] 变更将在custom-features/变更日志.md中记录
+- [ ] 实现前先查看对应模块变更日志
+- [ ] 代码变更与文档更新同步进行
+
+### 变更管理规范验证
+- [ ] 已规划custom-features目录结构
+- [ ] 需求文档命名格式: REQ-YYYYMMDD-功能名称.md
+- [ ] 实现文档命名格式: 组件名称_技术方案.md
+- [ ] 包含完整的变更记录要素
 
 ## Project Structure
 

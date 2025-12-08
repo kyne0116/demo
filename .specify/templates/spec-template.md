@@ -113,3 +113,25 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+
+## 宪法合规性检查 *(mandatory)*
+
+### 开发原则对齐
+- [ ] **MVP优先原则**: 功能设计确保每个用户故事都有独立可用的最小实现
+- [ ] **最简代码原则**: 技术方案避免过度工程化和不必要的抽象
+- [ ] **最全功能原则**: 完整实现用户故事的所有必要功能，不偷工减料
+
+### 文档规范对齐
+- [ ] **变更记录规划**: 已规划在custom-features/变更日志.md中的记录方式
+- [ ] **文档同步**: 代码实现与文档更新将在同一次提交中完成
+- [ ] **变更日志查阅**: 实现前将查看对应模块的变更日志
+
+### 变更管理规范对齐
+- [ ] **目录结构**: 功能实现将遵循custom-features/目录结构规范
+- [ ] **文档命名**: 需求和实现文档遵循指定命名格式
+- [ ] **变更记录**: 包含日期、类型、简介、详细文档链接、变更内容、影响范围
+
+### 质量保证对齐
+- [ ] **单元测试设计**: 以函数/方法为最小单元设计测试用例
+- [ ] **集成测试规划**: 完成MVP后立即进行集成测试验证
+- [ ] **测试驱动**: 遵循测试优先的开发模式

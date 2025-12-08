@@ -159,6 +159,37 @@ Examples of foundational tasks (adjust based on your project):
 
 ---
 
+## Phase N+1: 宪法合规性验证 *(新增)*
+
+**Purpose**: 确保所有实现符合项目宪法要求
+
+### 强制约束验证
+- [ ] TXXX [P] 验证所有Git操作都有明确授权记录
+- [ ] TXXX [P] 确认未使用Windows语法(代码中使用/dev/null)
+- [ ] TXXX [P] 验证所有文档和代码注释使用中文
+
+### 开发原则验证
+- [ ] TXXX [P] 确认代码遵循最简原则(删除冗余代码和抽象层)
+- [ ] TXXX [P] 验证功能实现完整性(无偷工减料)
+- [ ] TXXX [P] 确认无历史包袱设计(无向后兼容约束)
+
+### 文档规范验证
+- [ ] TXXX [P] 在custom-features/变更日志.md中添加功能变更记录
+- [ ] TXXX [P] 验证代码变更与文档更新同步提交
+- [ ] TXXX [P] 确认变更记录包含完整要素
+
+### 变更管理规范验证
+- [ ] TXXX [P] 在custom-features/requirements/创建需求文档(如果需要)
+- [ ] TXXX [P] 在custom-features/components/创建实现文档
+- [ ] TXXX [P] 验证文档命名格式符合规范
+
+### 质量保证验证
+- [ ] TXXX [P] 验证单元测试覆盖所有函数/方法
+- [ ] TXXX [P] 执行集成测试验证MVP完整性
+- [ ] TXXX [P] 确认每个用户故事独立可测试
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
