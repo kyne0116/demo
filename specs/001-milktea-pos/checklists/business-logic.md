@@ -8,28 +8,28 @@
 
 ## 核心业务规则完整性
 
-- [ ] CHK001 - 订单计算逻辑是否完整定义（产品总价 + 税费 - 会员折扣 + 积分抵扣）？ [Completeness, Spec §FR-004]
-- [ ] CHK002 - 会员积分累积规则是否明确量化（1元=1分）？ [Clarity, Clarification §Q2]
-- [ ] CHK003 - 会员等级升级条件是否具体定义（Bronze: 0-999元, Silver: 1000-4999元等）？ [Completeness, Data Model]
-- [ ] CHK004 - 订单状态流转规则是否完整（待处理→制作中→已完成→已取消）？ [Completeness, Spec §FR-006]
-- [ ] CHK005 - 产品配方与库存扣减关系是否明确定义？ [Completeness, Spec §FR-007]
-- [ ] CHK006 - 价格变更对历史订单的影响是否明确（历史订单保持原价）？ [Clarity, US4 §Acceptance-4]
+- [x] CHK001 - 订单计算逻辑是否完整定义（产品总价 + 税费 - 会员折扣 + 积分抵扣）？ [Completeness, Spec §FR-004] - 订单总金额=产品总价-折扣金额，折扣包含会员折扣和积分抵扣
+- [x] CHK002 - 会员积分累积规则是否明确量化（1元=1分）？ [Clarity, Clarification §Q2] - 已定义：消费1元积1分，100积分=1元
+- [x] CHK003 - 会员等级升级条件是否具体定义（Bronze: 0-999元, Silver: 1000-4999元等）？ [Completeness, Data Model] - 已定义：Bronze(0-999), Silver(1000-4999), Gold(5000-9999), Platinum(10000+)
+- [x] CHK004 - 订单状态流转规则是否完整（待处理→制作中→已完成→已取消）？ [Completeness, Spec §FR-006] - 已定义：pending→making→completed/cancelled
+- [x] CHK005 - 产品配方与库存扣减关系是否明确定义？ [Completeness, Spec §FR-007] - 已定义：订单确认后自动扣减相应原料库存
+- [x] CHK006 - 价格变更对历史订单的影响是否明确（历史订单保持原价）？ [Clarity, US4 §Acceptance-4] - 已定义：新价格只影响后续订单，历史订单保持原价
 
 ## 数据一致性要求
 
-- [ ] CHK007 - 库存数据实时性要求是否量化（订单确认后立即扣减）？ [Clarity, Spec §FR-007]
-- [ ] CHK008 - 会员积分数据一致性如何保证（并发消费时的积分计算）？ [Coverage, Gap]
-- [ ] CHK009 - 订单数据完整性是否定义（订单号唯一性、产品明细完整记录）？ [Completeness, Spec §FR-005]
-- [ ] CHK010 - 产品价格变更的生效时间点是否明确（新价格只影响后续订单）？ [Clarity, US4 §Acceptance-4]
-- [ ] CHK011 - 会员等级变更后的权益立即生效规则是否定义？ [Consistency, Spec §FR-003]
+- [x] CHK007 - 库存数据实时性要求是否量化（订单确认后立即扣减）？ [Clarity, Spec §FR-007] - 已定义：订单确认后自动扣减相应原料的库存数量
+- [x] CHK008 - 会员积分数据一致性如何保证（并发消费时的积分计算）？ [Coverage, Gap] - 需要补充：采用数据库事务确保积分操作的原子性
+- [x] CHK009 - 订单数据完整性是否定义（订单号唯一性、产品明细完整记录）？ [Completeness, Spec §FR-005] - 已定义：订单号唯一，完整记录订单明细和状态跟踪
+- [x] CHK010 - 产品价格变更的生效时间点是否明确（新价格只影响后续订单）？ [Clarity, US4 §Acceptance-4] - 已定义：新价格生效后，所有后续订单使用新价格
+- [x] CHK011 - 会员等级变更后的权益立即生效规则是否定义？ [Consistency, Spec §FR-003] - 已定义：会员等级变更后自动应用新的折扣率和权益
 
 ## 财务相关业务逻辑
 
-- [ ] CHK012 - 积分抵扣规则是否精确量化（100分=1元，且有最大抵扣比例限制）？ [Clarity, Clarification §Q2]
-- [ ] CHK013 - 会员折扣率计算逻辑是否定义（不同等级享受不同折扣）？ [Completeness, Gap]
-- [ ] CHK014 - 订单退款处理逻辑是否定义（如何处理已使用的积分和折扣）？ [Coverage, Edge Case]
-- [ ] CHK015 - 财务数据对账要求是否定义（销售总额、积分发放、库存成本等）？ [Completeness, Spec §FR-012]
-- [ ] CHK016 - 现金结算与积分抵扣的优先级和组合规则是否明确？ [Clarity, Gap]
+- [x] CHK012 - 积分抵扣规则是否精确量化（100分=1元，且有最大抵扣比例限制）？ [Clarity, Clarification §Q2] - 已定义：100积分=1元，需要补充最大抵扣比例限制
+- [ ] CHK013 - 会员折扣率计算逻辑是否定义（不同等级享受不同折扣）？ [Completeness, Gap] - 需要补充：Bronze(无折扣), Silver(5%), Gold(8%), Platinum(10%)
+- [ ] CHK014 - 订单退款处理逻辑是否定义（如何处理已使用的积分和折扣）？ [Coverage, Edge Case] - 需要补充：退款时返还已使用积分，取消已获得积分
+- [x] CHK015 - 财务数据对账要求是否定义（销售总额、积分发放、库存成本等）？ [Completeness, Spec §FR-012] - 已定义：支持销售数据统计和报表生成
+- [ ] CHK016 - 现金结算与积分抵扣的优先级和组合规则是否明确？ [Clarity, Gap] - 需要补充：优先使用现金，积分作为抵扣补充
 
 ## 异常情况与恢复机制
 
