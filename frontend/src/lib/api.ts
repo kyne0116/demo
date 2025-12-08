@@ -137,27 +137,54 @@ class ApiClient {
     return this.request('/profile');
   }
 
-  // 用户相关API
-  async getUsers() {
-    return this.request('/users');
-  }
-
-  async getUser(id: string) {
-    return this.request(`/users/${id}`);
-  }
-
-  async createUser(userData: any) {
-    return this.request('/users', {
+  // 会员相关API
+  async createMember(memberData: {
+    email: string;
+    password: string;
+    phone: string;
+    name: string;
+    memberNumber?: string;
+    referralCode?: string;
+  }) {
+    return this.request('/members', {
       method: 'POST',
-      body: JSON.stringify(userData),
+      body: JSON.stringify(memberData),
     });
   }
 
-  async updateUser(id: string, userData: any) {
-    return this.request(`/users/${id}`, {
+  async getMembers(level?: string, page = 1, limit = 10) {
+    const query = new URLSearchParams();
+    if (level) query.append('level', level);
+    query.append('page', page.toString());
+    query.append('limit', limit.toString());
+
+    return this.request(`/members?${query.toString()}`);
+  }
+
+  async getMember(id: string) {
+    return this.request(`/members/${id}`);
+  }
+
+  async updateMember(id: string, updateData: any) {
+    return this.request(`/members/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify(userData),
+      body: JSON.stringify(updateData),
     });
+  }
+
+  async addMemberPoints(id: string, pointsData: {
+    points: number;
+    type: string;
+    description?: string;
+  }) {
+    return this.request(`/members/${id}/points`, {
+      method: 'POST',
+      body: JSON.stringify(pointsData),
+    });
+  }
+
+  async getMemberOrderStats(customerId: string) {
+    return this.request(`/orders/member/${customerId}/stats`);
   }
 }
 

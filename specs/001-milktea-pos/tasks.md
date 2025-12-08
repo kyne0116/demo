@@ -98,23 +98,23 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T035 [P] [US2] Contract test for POST /api/members endpoint in tests/contract/members.test.ts
-- [ ] T036 [P] [US2] Contract test for GET /api/members/:id endpoint in tests/contract/members.test.ts
-- [ ] T037 [P] [US2] Integration test for member registration and point management in tests/integration/member-management.test.ts
-- [ ] T038 [P] [US2] Unit test for MemberService with point calculation in tests/unit/members/MemberService.test.ts
-- [ ] T039 [P] [US2] Unit test for MemberRegistrationService in tests/unit/members/MemberRegistrationService.test.ts
-- [ ] T040 [P] [US2] Unit test for PointCalculationService in tests/unit/members/PointCalculationService.test.ts
+- [x] T035 [P] [US2] Contract test for POST /api/members endpoint in tests/contract/members.test.ts
+- [x] T036 [P] [US2] Contract test for GET /api/members/:id endpoint in tests/contract/members.test.ts
+- [x] T037 [P] [US2] Integration test for member registration and point management in tests/integration/member-management.test.ts
+- [x] T038 [P] [US2] Unit test for MemberService with point calculation in tests/unit/members/MemberService.test.ts
+- [x] T039 [P] [US2] Unit test for MemberRegistrationService in tests/unit/members/MemberRegistrationService.test.ts
+- [x] T040 [P] [US2] Unit test for PointCalculationService in tests/unit/members/PointCalculationService.test.ts
 
 ### Implementation for User Story 2
 
-- [ ] T041 [P] [US2] Create MemberProfile entity with TypeORM decorators in backend/src/modules/members/entities/MemberProfile.ts
-- [ ] T042 [US2] Implement MembersService with registration and point management in backend/src/modules/members/members.service.ts
-- [ ] T043 [US2] Implement MembersController with REST endpoints in backend/src/modules/members/members.controller.ts
-- [ ] T044 [US2] Update OrdersService to integrate with member point calculation in backend/src/modules/orders/orders.service.ts
-- [ ] T045 [US2] Create MemberRegistrationPage in frontend/src/app/members/register/page.tsx
-- [ ] T046 [US2] Create MemberProfilePage in frontend/src/app/members/profile/page.tsx
-- [ ] T047 [US2] Create MemberCard component with point display in frontend/src/components/MemberCard.tsx
-- [ ] T048 [US2] Update CheckoutPage to integrate member discount logic in frontend/src/app/checkout/page.tsx
+- [x] T041 [P] [US2] Create MemberProfile entity with TypeORM decorators in backend/src/modules/members/entities/MemberProfile.ts
+- [x] T042 [US2] Implement MembersService with registration and point management in backend/src/modules/members/members.service.ts
+- [x] T043 [US2] Implement MembersController with REST endpoints in backend/src/modules/members/members.controller.ts
+- [x] T044 [US2] Update OrdersService to integrate with member point calculation in backend/src/modules/orders/orders.service.ts
+- [x] T045 [US2] Create MemberRegistrationPage in frontend/src/app/members/register/page.tsx
+- [x] T046 [US2] Create MemberProfilePage in frontend/src/app/members/profile/page.tsx
+- [x] T047 [US2] Create MemberCard component with point display in frontend/src/components/MemberCard.tsx
+- [x] T048 [US2] Update CheckoutPage to integrate member discount logic in frontend/src/app/checkout/page.tsx
 
 **Checkpoint**: At this point, User Story 2 should be fully functional and testable independently
 
