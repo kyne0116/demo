@@ -130,24 +130,31 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T049 [P] [US3] Contract test for staff management endpoints in tests/contract/staff-management.test.ts
-- [ ] T050 [P] [US3] Contract test for authorization guards in tests/contract/auth-guards.test.ts
-- [ ] T051 [P] [US3] Integration test for role-based access control in tests/integration/rbac.test.ts
-- [ ] T052 [P] [US3] Unit test for PermissionService in tests/unit/auth/PermissionService.test.ts
-- [ ] T053 [P] [US3] Unit test for RolesGuard in tests/unit/auth/RolesGuard.test.ts
-- [ ] T054 [P] [US3] Unit test for AuditLogService in tests/unit/users/AuditLogService.test.ts
+- [x] T049 [P] [US3] Contract test for staff management endpoints in tests/contract/staff-management.test.ts
+- [x] T050 [P] [US3] Contract test for authorization guards in tests/contract/auth-guards.test.ts
+- [x] T051 [P] [US3] Integration test for role-based access control in tests/integration/rbac.test.ts
+- [x] T052 [P] [US3] Unit test for PermissionService in tests/unit/auth/PermissionService.test.ts
+- [x] T053 [P] [US3] Unit test for RolesGuard in tests/unit/auth/RolesGuard.test.ts
+- [x] T054 [P] [US3] Unit test for AuditLogService in tests/unit/users/AuditLogService.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T055 [P] [US3] Update User entity to include role-based permissions in backend/src/modules/users/entities/User.ts
-- [ ] T056 [P] [US3] Create OperationLog entity for audit trail in backend/src/modules/users/entities/OperationLog.ts
-- [ ] T057 [P] [US3] Implement RolesGuard for authorization in backend/src/common/guards/roles.guard.ts
-- [ ] T058 [P] [US3] Implement PermissionService for role management in backend/src/modules/auth/permission.service.ts
-- [ ] T059 [P] [US3] Implement UsersService with role-based operations in backend/src/modules/users/users.service.ts
-- [ ] T060 [P] [US3] Implement UsersController with permission checks in backend/src/modules/users/users.controller.ts
-- [ ] T061 [P] [US3] Create AdminDashboardPage in frontend/src/app/admin/dashboard/page.tsx
-- [ ] T062 [P] [US3] Create StaffManagementPage in frontend/src/app/admin/staff/page.tsx
-- [ ] T063 [P] [US3] Create PermissionGuard component for UI in frontend/src/components/PermissionGuard.tsx
+- [x] T049 [P] [US3] Contract test for staff management endpoints in tests/contract/staff-management.test.ts
+- [x] T050 [P] [US3] Contract test for authorization guards in tests/contract/auth-guards.test.ts
+- [x] T051 [P] [US3] Integration test for role-based access control in tests/integration/rbac.test.ts
+- [x] T052 [P] [US3] Unit test for PermissionService in tests/unit/auth/PermissionService.test.ts
+- [x] T053 [P] [US3] Unit test for RolesGuard in tests/unit/auth/RolesGuard.test.ts
+- [x] T054 [P] [US3] Unit test for AuditLogService in tests/unit/users/AuditLogService.test.ts
+
+- [x] T055 [P] [US3] Update User entity to include role-based permissions in backend/src/modules/users/entities/User.ts
+- [x] T056 [P] [US3] Create OperationLog entity for audit trail in backend/src/modules/users/entities/OperationLog.ts
+- [x] T057 [P] [US3] Implement RolesGuard for authorization in backend/src/common/guards/roles.guard.ts
+- [x] T058 [P] [US3] Implement PermissionService for role management in backend/src/modules/auth/permission.service.ts
+- [x] T059 [P] [US3] Implement UsersService with role-based operations in backend/src/modules/users/users.service.ts
+- [x] T060 [P] [US3] Implement UsersController with permission checks in backend/src/modules/users/users.controller.ts
+- [x] T061 [P] [US3] Create AdminDashboardPage in frontend/src/app/admin/dashboard/page.tsx
+- [x] T062 [P] [US3] Create StaffManagementPage in frontend/src/app/admin/staff/page.tsx
+- [x] T063 [P] [US3] Create PermissionGuard component for UI in frontend/src/components/PermissionGuard.tsx
 
 **Checkpoint**: At this point, User Story 3 should be fully functional and testable independently
 
