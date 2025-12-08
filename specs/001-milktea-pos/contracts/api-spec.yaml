@@ -1,0 +1,1007 @@
+openapi: 3.0.0
+info:
+  title: 奶茶店销售管理系统 API
+  description: 基于NestJS的后端API，支持完整的奶茶店运营管理功能
+  version: 1.0.0
+  contact:
+    name: 系统支持
+    email: support@milktea.com
+
+servers:
+  - url: http://localhost:3000/api
+    description: 本地开发环境
+  - url: https://api.milktea.com/api
+    description: 生产环境
+
+security:
+  - BearerAuth: []
+
+paths:
+  # ==================== 认证相关 ====================
+  /auth/login:
+    post:
+      summary: 用户登录
+      tags: [认证]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: 用户邮箱
+                password:
+                  type: string
+                  minLength: 8
+                  description: 用户密码
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      user:
+                        $ref: '#/components/schemas/User'
+        '401':
+          description: 认证失败
+
+  /auth/register:
+    post:
+      summary: 用户注册
+      tags: [认证]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, name, phone]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                  minLength: 2
+                phone:
+                  type: string
+                  pattern: '^1[3-9]\d{9}$'
+      responses:
+        '201':
+          description: 注册成功
+        '400':
+          description: 参数错误
+
+  # ==================== 用户管理 ====================
+  /users:
+    get:
+      summary: 获取用户列表
+      tags: [用户管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: 页码
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: 每页数量
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum: [customer, staff, manager, owner]
+          description: 用户角色过滤
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+
+  /users/{id}:
+    get:
+      summary: 获取用户详情
+      tags: [用户管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 获取成功
+        '404':
+          description: 用户不存在
+
+    put:
+      summary: 更新用户信息
+      tags: [用户管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: string
+                role:
+                  type: string
+                  enum: [customer, staff, manager, owner]
+      responses:
+        '200':
+          description: 更新成功
+
+  # ==================== 产品管理 ====================
+  /products:
+    get:
+      summary: 获取产品列表
+      tags: [产品管理]
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+            format: uuid
+          description: 分类过滤
+        - in: query
+          name: active
+          schema:
+            type: boolean
+          description: 是否启用
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: 搜索关键词
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+
+    post:
+      summary: 创建产品
+      tags: [产品管理]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, price, categoryId]
+              properties:
+                name:
+                  type: string
+                  minLength: 2
+                description:
+                  type: string
+                price:
+                  type: number
+                  minimum: 0
+                categoryId:
+                  type: string
+                  format: uuid
+                imageUrl:
+                  type: string
+                  format: uri
+                nutritionInfo:
+                  type: object
+      responses:
+        '201':
+          description: 创建成功
+
+  /products/{id}:
+    get:
+      summary: 获取产品详情
+      tags: [产品管理]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 获取成功
+
+    put:
+      summary: 更新产品
+      tags: [产品管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 更新成功
+
+  # ==================== 订单管理 ====================
+  /orders:
+    get:
+      summary: 获取订单列表
+      tags: [订单管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [pending, making, completed, cancelled]
+        - in: query
+          name: customer
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: staff
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      orders:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Order'
+                      summary:
+                        type: object
+                        properties:
+                          totalOrders:
+                            type: integer
+                          totalAmount:
+                            type: number
+
+    post:
+      summary: 创建订单
+      tags: [订单管理]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [items]
+              properties:
+                customerId:
+                  type: string
+                  format: uuid
+                  description: 客户ID（可为空，支持匿名购买）
+                items:
+                  type: array
+                  items:
+                    type: object
+                    required: [productId, quantity]
+                    properties:
+                      productId:
+                        type: string
+                        format: uuid
+                      quantity:
+                        type: integer
+                        minimum: 1
+                      customizations:
+                        type: object
+                notes:
+                  type: string
+                usePoints:
+                  type: integer
+                  minimum: 0
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Order'
+
+  /orders/{id}:
+    get:
+      summary: 获取订单详情
+      tags: [订单管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/Order'
+                      - type: object
+                        properties:
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/OrderItem'
+
+  /orders/{id}/status:
+    put:
+      summary: 更新订单状态
+      tags: [订单管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [pending, making, completed, cancelled]
+                notes:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+
+  # ==================== 会员管理 ====================
+  /members:
+    get:
+      summary: 获取会员列表
+      tags: [会员管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: level
+          schema:
+            type: string
+            enum: [bronze, silver, gold, platinum]
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: 搜索会员号或姓名
+      responses:
+        '200':
+          description: 获取成功
+
+    post:
+      summary: 创建会员
+      tags: [会员管理]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId                userId:
+]
+              properties:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: 创建成功
+
+  /members/{id}:
+    get:
+      summary: 获取会员详情
+      tags: [会员管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    allOf:
+                      - $ref: '#/components/schemas/MemberProfile'
+                      - type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+
+  /members/{id}/points:
+    put:
+      summary: 调整会员积分
+      tags: [会员管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [operation, amount]
+              properties:
+                operation:
+                  type: string
+                  enum: [add, deduct, redeem]
+                amount:
+                  type: integer
+                  minimum: 1
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: 调整成功
+
+  # ==================== 库存管理 ====================
+  /inventory:
+    get:
+      summary: 获取库存列表
+      tags: [库存管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: lowStock
+          schema:
+            type: boolean
+          description: 只显示低库存商品
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/InventoryItem'
+                      lowStockCount:
+                        type: integer
+
+    post:
+      summary: 创建库存项
+      tags: [库存管理]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, unit, currentStock, minStock]
+              properties:
+                name:
+                  type: string
+                unit:
+                  type: string
+                  enum: [g, ml, piece]
+                currentStock:
+                  type: number
+                  minimum: 0
+                minStock:
+                  type: number
+                  minimum: 0
+                maxStock:
+                  type: number
+                  minimum: 0
+                unitCost:
+                  type: number
+                  minimum: 0
+                supplier:
+                  type: string
+                expiryDate:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: 创建成功
+
+  /inventory/{id}/stock:
+    put:
+      summary: 更新库存
+      tags: [库存管理]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [operation, quantity]
+              properties:
+                operation:
+                  type: string
+                  enum: [add, deduct, set]
+                quantity:
+                  type: number
+                  minimum: 0
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: 更新成功
+
+  # ==================== 报表统计 ====================
+  /reports/sales:
+    get:
+      summary: 销售报表
+      tags: [报表统计]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          required: true
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: groupBy
+          schema:
+            type: string
+            enum: [day, week, month]
+          description: 分组方式
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      summary:
+                        type: object
+                        properties:
+                          totalOrders:
+                            type: integer
+                          totalAmount:
+                            type: number
+                          averageOrderValue:
+                            type: number
+                      dailyData:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            date:
+                              type: string
+                              format: date
+                            orders:
+                              type: integer
+                            amount:
+                              type: number
+
+  /reports/inventory:
+    get:
+      summary: 库存报表
+      tags: [报表统计]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      totalItems:
+                        type: integer
+                      lowStockItems:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/InventoryItem'
+                      totalValue:
+                        type: number
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+          enum: [customer, staff, manager, owner]
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    MemberProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        memberNumber:
+          type: string
+        level:
+          type: string
+          enum: [bronze, silver, gold, platinum]
+        points:
+          type: integer
+        totalSpent:
+          type: number
+        pointsUsed:
+          type: integer
+        discountRate:
+          type: number
+        isActive:
+          type: boolean
+        registeredAt:
+          type: string
+          format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        categoryId:
+          type: string
+          format: uuid
+        category:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+        imageUrl:
+          type: string
+          format: uri
+        nutritionInfo:
+          type: object
+        isActive:
+          type: boolean
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        orderNumber:
+          type: string
+        customerId:
+          type: string
+          format: uuid
+        staffId:
+          type: string
+          format: uuid
+        totalAmount:
+          type: number
+        discountAmount:
+          type: number
+        finalAmount:
+          type: number
+        pointsUsed:
+          type: integer
+        pointsEarned:
+          type: integer
+        status:
+          type: string
+          enum: [pending, making, completed, cancelled]
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            price:
+              type: number
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+        totalPrice:
+          type: number
+        customizations:
+          type: object
+        notes:
+          type: string
+
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        unit:
+          type: string
+          enum: [g, ml, piece]
+        currentStock:
+          type: number
+        minStock:
+          type: number
+        maxStock:
+          type: number
+        unitCost:
+          type: number
+        supplier:
+          type: string
+        expiryDate:
+          type: string
+          format: date
+        isActive:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+        isLowStock:
+          type: boolean
+          description: 是否低库存
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+tags:
+  - name: 认证
+    description: 用户登录注册相关接口
+  - name: 用户管理
+    description: 用户信息管理接口
+  - name: 产品管理
+    description: 产品信息管理接口
+  - name: 订单管理
+    description: 订单处理相关接口
+  - name: 会员管理
+    description: 会员信息和积分管理接口
+  - name: 库存管理
+    description: 库存管理和预警接口
+  - name: 报表统计
+    description: 数据统计和报表接口
