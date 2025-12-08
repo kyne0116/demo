@@ -63,26 +63,26 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T018 [P] [US1] Contract test for GET /api/products endpoint in tests/contract/products.test.ts
-- [ ] T019 [P] [US1] Contract test for POST /api/orders endpoint in tests/contract/orders.test.ts
-- [ ] T020 [P] [US1] Integration test for customer checkout flow in tests/integration/customer-checkout.test.ts
-- [ ] T021 [P] [US1] Unit test for order calculation service in tests/unit/orders/OrderCalculationService.test.ts
+- [x] T018 [P] [US1] Contract test for GET /api/products endpoint in tests/contract/products.test.ts
+- [x] T019 [P] [US1] Contract test for POST /api/orders endpoint in tests/contract/orders.test.ts
+- [x] T020 [P] [US1] Integration test for customer checkout flow in tests/integration/customer-checkout.test.ts
+- [x] T021 [P] [US1] Unit test for order calculation service in tests/unit/orders/OrderCalculationService.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T022 [P] [US1] Create Product entity with TypeORM decorators in backend/src/modules/products/entities/Product.ts
-- [ ] T023 [P] [US1] Create Category entity with TypeORM decorators in backend/src/modules/products/entities/Category.ts
-- [ ] T024 [P] [US1] Create Order entity with TypeORM decorators in backend/src/modules/orders/entities/Order.ts
-- [ ] T025 [P] [US1] Create OrderItem entity with TypeORM decorators in backend/src/modules/orders/entities/OrderItem.ts
-- [ ] T026 [US1] Implement ProductsService with CRUD operations in backend/src/modules/products/products.service.ts
-- [ ] T027 [US1] Implement OrdersService with order creation and calculation in backend/src/modules/orders/orders.service.ts
-- [ ] T028 [US1] Implement ProductsController with REST endpoints in backend/src/modules/products/products.controller.ts
-- [ ] T029 [US1] Implement OrdersController with REST endpoints in backend/src/modules/orders/orders.controller.ts
-- [ ] T030 [US1] Create ProductList component in frontend/src/components/ProductList.tsx
-- [ ] T031 [US1] Create ShoppingCart component in frontend/src/components/ShoppingCart.tsx
-- [ ] T032 [US1] Create CheckoutPage in frontend/src/app/checkout/page.tsx
-- [ ] T033 [US1] Implement API client utilities in frontend/src/lib/api.ts
-- [ ] T034 [US1] Add validation schemas and error handling for US1 endpoints
+- [x] T022 [P] [US1] Create Product entity with TypeORM decorators in backend/src/modules/products/entities/Product.ts
+- [x] T023 [P] [US1] Create Category entity with TypeORM decorators in backend/src/modules/products/entities/Category.ts
+- [x] T024 [P] [US1] Create Order entity with TypeORM decorators in backend/src/modules/orders/entities/Order.ts
+- [x] T025 [P] [US1] Create OrderItem entity with TypeORM decorators in backend/src/modules/orders/entities/OrderItem.ts
+- [x] T026 [US1] Implement ProductsService with CRUD operations in backend/src/modules/products/products.service.ts
+- [x] T027 [US1] Implement OrdersService with order creation and calculation in backend/src/modules/orders/orders.service.ts
+- [x] T028 [US1] Implement ProductsController with REST endpoints in backend/src/modules/products/products.controller.ts
+- [x] T029 [US1] Implement OrdersController with REST endpoints in backend/src/modules/orders/orders.controller.ts
+- [x] T030 [US1] Create ProductList component in frontend/src/components/ProductList.tsx
+- [x] T031 [US1] Create ShoppingCart component in frontend/src/components/ShoppingCart.tsx
+- [x] T032 [US1] Create CheckoutPage in frontend/src/app/checkout/page.tsx
+- [x] T033 [US1] Implement API client utilities in frontend/src/lib/api.ts
+- [x] T034 [US1] Add validation schemas and error handling for US1 endpoints
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

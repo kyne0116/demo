@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Order } from './order.entity';
+import { Product } from '../../products/entities/product.entity';
 
 @Entity('order_items')
 export class OrderItem {
@@ -28,4 +30,13 @@ export class OrderItem {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  // 关系
+  @ManyToOne(() => Order, order => order.orderItems, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'orderId' })
+  order: Order;
+
+  @ManyToOne(() => Product, product => product.orderItems, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'productId' })
+  product: Product;
 }

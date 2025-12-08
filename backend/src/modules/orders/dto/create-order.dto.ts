@@ -1,7 +1,6 @@
 import { IsArray, IsNotEmpty, IsString, IsUUID, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { OrderStatus } from '../entities/order.entity';
 
 export class OrderItemDto {
   @ApiProperty({ example: 'product-uuid', description: '产品ID' })
@@ -22,6 +21,18 @@ export class OrderItemDto {
   quantity: number;
 }
 
+export class MemberInfoDto {
+  @ApiProperty({ example: 'silver', description: '会员等级', required: false })
+  @IsOptional()
+  @IsString()
+  memberLevel?: string;
+
+  @ApiProperty({ example: 500, description: '可用积分', required: false })
+  @IsOptional()
+  @IsNumber()
+  pointsAvailable?: number;
+}
+
 export class CreateOrderDto {
   @ApiProperty({ example: 'customer-uuid', description: '客户ID（可为空，支持匿名购买）', required: false })
   @IsOptional()
@@ -33,8 +44,8 @@ export class CreateOrderDto {
   @IsNotEmpty()
   staffId: string;
 
-  @ApiProperty({ 
-    type: [OrderItemDto], 
+  @ApiProperty({
+    type: [OrderItemDto],
     description: '订单商品列表',
     example: [
       { productId: 'uuid1', productName: '珍珠奶茶', unitPrice: 18.50, quantity: 2 },
@@ -50,4 +61,10 @@ export class CreateOrderDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @ApiProperty({ type: MemberInfoDto, description: '会员信息（可选）', required: false })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => MemberInfoDto)
+  memberInfo?: MemberInfoDto;
 }

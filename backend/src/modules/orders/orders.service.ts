@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order, OrderStatus } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
+import { OrderCalculationService } from './services/order-calculation.service';
 
 @Injectable()
 export class OrdersService {
@@ -11,6 +12,7 @@ export class OrdersService {
     private orderRepository: Repository<Order>,
     @InjectRepository(OrderItem)
     private orderItemRepository: Repository<OrderItem>,
+    private orderCalculationService: OrderCalculationService,
   ) {}
 
   async createOrder(orderData: {
@@ -23,26 +25,30 @@ export class OrdersService {
       quantity: number;
     }>;
     notes?: string;
+    memberInfo?: {
+      memberLevel?: string;
+      pointsAvailable?: number;
+    };
   }): Promise<Order> {
-    // 计算订单总金额
-    const totalAmount = orderData.items.reduce(
-      (sum, item) => sum + item.unitPrice * item.quantity,
-      0
+    // 使用订单计算服务计算金额
+    const calculationResult = this.orderCalculationService.calculateFinalOrder(
+      orderData.items,
+      orderData.memberInfo
     );
 
     // 生成订单号
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
+    const orderNumber = this.orderCalculationService.generateOrderNumber();
 
     // 创建订单
     const order = this.orderRepository.create({
       orderNumber,
       customerId: orderData.customerId,
       staffId: orderData.staffId,
-      totalAmount,
-      discountAmount: 0,
-      finalAmount: totalAmount,
-      pointsUsed: 0,
-      pointsEarned: Math.floor(totalAmount), // 积分奖励：消费金额=积分
+      totalAmount: calculationResult.totalAmount,
+      discountAmount: calculationResult.discountAmount,
+      finalAmount: calculationResult.finalAmount,
+      pointsUsed: calculationResult.pointsUsed,
+      pointsEarned: calculationResult.pointsEarned,
       status: OrderStatus.PENDING,
       notes: orderData.notes,
     });
@@ -50,7 +56,7 @@ export class OrdersService {
     const savedOrder = await this.orderRepository.save(order);
 
     // 创建订单项
-    const orderItems = orderData.items.map(item => 
+    const orderItems = orderData.items.map(item =>
       this.orderItemRepository.create({
         orderId: savedOrder.id,
         productId: item.productId,
@@ -99,7 +105,7 @@ export class OrdersService {
 
   async cancelOrder(id: string, reason?: string): Promise<Order> {
     const order = await this.findOne(id);
-    
+
     if (order.status === OrderStatus.COMPLETED) {
       throw new Error('已完成的订单不能取消');
     }
