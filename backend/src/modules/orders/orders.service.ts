@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order, OrderStatus } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
+import { Product } from '../products/entities/product.entity';
 import { OrderCalculationService } from './services/order-calculation.service';
 import { MembersService } from '../members/members.service';
+import { InventoryService } from '../inventory/inventory.service';
 
 @Injectable()
 export class OrdersService {
@@ -13,8 +15,11 @@ export class OrdersService {
     private orderRepository: Repository<Order>,
     @InjectRepository(OrderItem)
     private orderItemRepository: Repository<OrderItem>,
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
     private orderCalculationService: OrderCalculationService,
     private membersService: MembersService,
+    private inventoryService: InventoryService,
   ) {}
 
   async createOrder(orderData: {
@@ -69,7 +74,15 @@ export class OrdersService {
       })
     );
 
-    await this.orderItemRepository.save(orderItems);
+    const savedOrderItems = await this.orderItemRepository.save(orderItems);
+
+    // 自动扣减库存（获取订单项的完整信息，包括产品配方）
+    const orderItemsWithProduct = await this.orderItemRepository.find({
+      where: { orderId: savedOrder.id },
+      relations: ['product', 'product.recipes'],
+    });
+
+    await this.inventoryService.deductStockForOrder(orderItemsWithProduct);
 
     return this.findOne(savedOrder.id);
   }
@@ -96,6 +109,7 @@ export class OrdersService {
 
   async updateStatus(id: string, status: OrderStatus): Promise<Order> {
     const order = await this.findOne(id);
+    const previousStatus = order.status;
     order.status = status;
 
     if (status === OrderStatus.COMPLETED) {
@@ -103,6 +117,16 @@ export class OrdersService {
 
       // 如果订单包含会员信息，完成订单后更新会员积分
       await this.handleOrderCompletion(order);
+    } else if (status === OrderStatus.CANCELLED && previousStatus !== OrderStatus.CANCELLED) {
+      // 订单取消时恢复库存
+      const orderItems = await this.orderItemRepository.find({
+        where: { orderId: order.id },
+        relations: ['product', 'product.recipes'],
+      });
+
+      if (orderItems.length > 0) {
+        await this.inventoryService.restoreStockForOrder(orderItems);
+      }
     }
 
     return this.orderRepository.save(order);
@@ -118,6 +142,16 @@ export class OrdersService {
     order.status = OrderStatus.CANCELLED;
     if (reason) {
       order.notes = order.notes ? `${order.notes}\n取消原因: ${reason}` : `取消原因: ${reason}`;
+    }
+
+    // 取消订单时恢复库存
+    const orderItems = await this.orderItemRepository.find({
+      where: { orderId: order.id },
+      relations: ['product', 'product.recipes'],
+    });
+
+    if (orderItems.length > 0) {
+      await this.inventoryService.restoreStockForOrder(orderItems);
     }
 
     return this.orderRepository.save(order);
@@ -198,6 +232,57 @@ export class OrdersService {
     await this.handleOrderCompletion(completedOrder);
 
     return this.findOne(completedOrder.id);
+  }
+
+  /**
+   * 验证订单是否可以创建（库存是否充足）
+   */
+  async validateOrderCanBeCreated(items: Array<{
+    productId: string;
+    productName: string;
+    unitPrice: number;
+    quantity: number;
+  }>): Promise<{ canCreate: boolean; insufficientItems: Array<{ productName: string; required: number; available: number }> }> {
+    const insufficientItems: Array<{ productName: string; required: number; available: number }> = [];
+
+    // 检查每个产品的库存
+    for (const item of items) {
+      const product = await this.productRepository.findOne({
+        where: { id: item.productId },
+        relations: ['recipes', 'recipes.inventoryItem'],
+      });
+
+      if (!product) {
+        insufficientItems.push({
+          productName: item.productName,
+          required: item.quantity,
+          available: 0
+        });
+        continue;
+      }
+
+      // 检查产品的每个原料是否足够
+      if (product.recipes) {
+        for (const recipe of product.recipes) {
+          const requiredQuantity = Number(recipe.getAdjustedQuantity()) * item.quantity;
+          const inventoryItem = recipe.inventoryItem;
+
+          if (inventoryItem && inventoryItem.currentStock < requiredQuantity) {
+            insufficientItems.push({
+              productName: product.name,
+              required: requiredQuantity,
+              available: inventoryItem.currentStock
+            });
+            break; // 该产品库存不足，停止检查其他原料
+          }
+        }
+      }
+    }
+
+    return {
+      canCreate: insufficientItems.length === 0,
+      insufficientItems
+    };
   }
 
   /**
