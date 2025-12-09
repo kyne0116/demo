@@ -14,6 +14,8 @@ import {
   ClipboardList,
   Warehouse,
   AlertTriangle,
+  Coffee,
+  TrendingUp,
 } from 'lucide-react';
 import PermissionGuard from '../../components/PermissionGuard';
 
@@ -58,6 +60,18 @@ const navigation = [
     name: '订单管理',
     href: '/admin/orders',
     icon: ShoppingCart,
+    permission: 'orders:read',
+  },
+  {
+    name: '订单制作',
+    href: '/admin/orders/production',
+    icon: Coffee,
+    permission: 'orders:read',
+  },
+  {
+    name: '制作统计',
+    href: '/admin/orders/stats',
+    icon: TrendingUp,
     permission: 'orders:read',
   },
   {

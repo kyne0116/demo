@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
+import { ProductionController } from './production.controller';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Product } from '../products/entities/product.entity';
 import { OrderCalculationService } from './services/order-calculation.service';
+import { ProductionService } from './production.service';
 import { InventoryModule } from '../inventory/inventory.module';
 import { MembersModule } from '../members/members.module';
 
@@ -15,8 +17,19 @@ import { MembersModule } from '../members/members.module';
     InventoryModule,
     MembersModule,
   ],
-  controllers: [OrdersController],
-  providers: [OrdersService, OrderCalculationService],
-  exports: [OrdersService, OrderCalculationService],
+  controllers: [
+    OrdersController,
+    ProductionController,
+  ],
+  providers: [
+    OrdersService,
+    OrderCalculationService,
+    ProductionService,
+  ],
+  exports: [
+    OrdersService,
+    OrderCalculationService,
+    ProductionService,
+  ],
 })
 export class OrdersModule {}
