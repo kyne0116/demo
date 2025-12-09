@@ -72,6 +72,281 @@ milktea/
 3. **数据库规范** - 统一的数据库设计原则
 4. **测试规范** - 单元测试和集成测试标准
 
+## 部署与启动
+
+### 环境要求
+
+- **Node.js**: >= 18.0.0
+- **npm**: >= 8.0.0 (或使用 yarn/pnpm)
+- **数据库**: SQLite (开发环境) / MySQL/PostgreSQL (生产环境)
+
+### 快速启动
+
+#### 1. 克隆项目
+```bash
+git clone <repository-url>
+cd demo
+```
+
+#### 2. 安装依赖
+
+**后端依赖**
+```bash
+cd backend
+npm install
+```
+
+**前端依赖**
+```bash
+cd ../frontend
+npm install
+```
+
+#### 3. 环境配置
+
+**后端环境变量**
+```bash
+cd backend
+cp .env.example .env
+```
+
+编辑 `.env` 文件：
+```env
+# 数据库配置
+DATABASE_TYPE=sqlite
+DATABASE_PATH=./data/milktea.db
+
+# JWT配置
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=24h
+
+# 应用配置
+NODE_ENV=development
+PORT=3001
+
+# 跨域配置
+CORS_ORIGIN=http://localhost:3000
+```
+
+**前端环境变量**
+```bash
+cd ../frontend
+cp .env.local.example .env.local
+```
+
+编辑 `.env.local` 文件：
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_APP_NAME=奶茶店管理系统
+```
+
+#### 4. 数据库初始化
+
+**开发环境 (SQLite)**
+```bash
+cd backend
+npm run db:migrate
+npm run db:seed
+```
+
+**生产环境 (MySQL)**
+```bash
+# 创建数据库
+mysql -u root -p
+CREATE DATABASE milktea_db;
+exit
+
+# 运行迁移
+npm run db:migrate
+npm run db:seed
+```
+
+#### 5. 启动服务
+
+**开发模式启动**
+```bash
+# 启动后端服务 (端口 3001)
+cd backend
+npm run start:dev
+
+# 启动前端服务 (端口 3000) - 新开终端窗口
+cd frontend
+npm run dev
+```
+
+**生产模式启动**
+```bash
+# 构建和启动后端
+cd backend
+npm run build
+npm run start:prod
+
+# 构建和启动前端
+cd frontend
+npm run build
+npm run start
+```
+
+### 数据初始化
+
+#### 管理员账户
+项目首次启动时会自动创建默认管理员账户：
+
+- **用户名**: admin
+- **密码**: admin123
+- **角色**: 系统管理员
+
+#### 示例数据
+运行种子脚本后会创建以下示例数据：
+
+- **产品数据**: 20+种奶茶和配料产品
+- **库存数据**: 基础原料库存记录
+- **会员数据**: 示例会员账户
+- **订单数据**: 历史订单记录
+
+#### 重置数据
+如需重新初始化数据：
+```bash
+cd backend
+npm run db:reset
+npm run db:seed
+```
+
+### 系统访问
+
+#### 前端访问
+- **开发环境**: http://localhost:3000
+- **生产环境**: http://your-domain.com
+
+#### 后端API
+- **开发环境**: http://localhost:3001
+- **API文档**: http://localhost:3001/api/docs (如启用Swagger)
+
+#### 管理员登录
+1. 访问管理员登录页面
+2. 使用默认账户登录：
+   - 用户名: `admin`
+   - 密码: `admin123`
+3. 登录后可以访问所有管理功能
+
+#### 常用功能入口
+- **订单管理**: `/admin/orders`
+- **产品管理**: `/admin/products`
+- **库存管理**: `/admin/inventory`
+- **会员管理**: `/admin/members`
+- **员工管理**: `/admin/staff`
+- **库存监控**: `/admin/inventory/monitor`
+- **制作管理**: `/admin/orders/production`
+- **制作统计**: `/admin/orders/stats`
+
+### 故障排除
+
+#### 常见问题
+
+**端口占用**
+```bash
+# 查看端口占用
+lsof -i :3000
+lsof -i :3001
+
+# 终止占用进程
+kill -9 <PID>
+```
+
+**数据库连接失败**
+- 检查数据库服务是否运行
+- 验证环境变量配置
+- 确保数据库用户权限正确
+
+**依赖安装失败**
+```bash
+# 清理npm缓存
+npm cache clean --force
+
+# 删除node_modules重新安装
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**权限错误**
+- 确保Node.js版本符合要求
+- 检查文件系统权限
+- 以管理员身份运行命令
+
+#### 日志查看
+```bash
+# 后端日志
+cd backend
+tail -f logs/application.log
+
+# 前端日志 (浏览器控制台)
+# 在浏览器开发者工具中查看
+```
+
+### 生产部署
+
+#### Docker部署
+```bash
+# 构建镜像
+docker-compose build
+
+# 启动服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+```
+
+#### PM2部署 (后端)
+```bash
+# 安装PM2
+npm install -g pm2
+
+# 启动应用
+pm2 start dist/main.js --name milktea-backend
+
+# 查看状态
+pm2 status
+pm2 logs milktea-backend
+```
+
+#### Nginx配置 (前端)
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+### 监控和维护
+
+#### 健康检查
+- 前端: `GET /api/health`
+- 后端: `GET /health`
+
+#### 数据备份
+```bash
+# SQLite备份
+cp backend/data/milktea.db backup/milktea-$(date +%Y%m%d).db
+
+# MySQL备份
+mysqldump -u username -p milktea_db > backup/milktea-$(date +%Y%m%d).sql
+```
+
+#### 性能监控
+- 使用PM2监控后端性能
+- 通过浏览器开发者工具监控前端性能
+- 数据库性能监控 (如使用MySQL Workbench)
+
 ## 许可证
 
 本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
