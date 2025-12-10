@@ -110,22 +110,61 @@ cd backend
 cp .env.example .env
 ```
 
-编辑 `.env` 文件：
+**数据库配置选项:**
+
+**选项1: MySQL (推荐生产环境)**
 ```env
-# 数据库配置
-DATABASE_TYPE=sqlite
-DATABASE_PATH=./data/milktea.db
+# 数据库连接信息
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=copyright
+DB_USERNAME=root
+DB_PASSWORD=
+
+# MySQL JDBC连接参数
+DB_USE_SSL=false
+DB_SERVER_TIMEZONE=Asia/Shanghai
+DB_ALLOW_PUBLIC_KEY_RETRIEVAL=true
+DB_USE_UNICODE=true
+DB_CHARACTER_ENCODING=utf8
+DB_CREATE_DATABASE_IF_NOT_EXIST=true
+DB_USE_AFFECTED_ROWS=true
+
+# 连接池配置
+DB_CONNECTION_TIMEOUT=30000
+DB_ACQUIRE_TIMEOUT=60000
+DB_TIMEOUT=60000
+DB_RETRY_ATTEMPTS=3
+DB_RETRY_DELAY=3000
 
 # JWT配置
-JWT_SECRET=your-super-secret-jwt-key
-JWT_EXPIRES_IN=24h
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_EXPIRES_IN=7d
 
 # 应用配置
 NODE_ENV=development
 PORT=3001
+FRONTEND_URL=http://localhost:3000
+```
 
-# 跨域配置
-CORS_ORIGIN=http://localhost:3000
+**选项2: SQLite (开发环境)**
+```env
+# 数据库配置 (使用SQLite)
+DB_TYPE=sqlite
+DB_DATABASE=./data/milktea.db
+
+# 其他配置保持不变
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=24h
+NODE_ENV=development
+PORT=3001
+```
+
+**快速配置数据库连接:**
+```bash
+# 测试数据库连接
+cd backend
+npm run db:test
 ```
 
 **前端环境变量**
@@ -142,23 +181,35 @@ NEXT_PUBLIC_APP_NAME=奶茶店管理系统
 
 #### 4. 数据库初始化
 
-**开发环境 (SQLite)**
+**MySQL环境 (推荐)**
 ```bash
 cd backend
+
+# 测试数据库连接
+npm run db:test
+
+# 如果测试成功，运行迁移和种子数据
 npm run db:migrate
 npm run db:seed
 ```
 
-**生产环境 (MySQL)**
+**SQLite环境 (开发测试)**
 ```bash
-# 创建数据库
-mysql -u root -p
-CREATE DATABASE milktea_db;
-exit
+cd backend
 
-# 运行迁移
+# SQLite不需要数据库连接测试
+# 直接运行迁移和种子数据
 npm run db:migrate
 npm run db:seed
+```
+
+**数据库管理命令:**
+```bash
+npm run db:test      # 测试数据库连接
+npm run db:check     # 检查数据库状态 (同db:test)
+npm run db:migrate   # 运行数据库迁移
+npm run db:seed      # 填充初始数据
+npm run db:reset     # 重置数据库 (如需要)
 ```
 
 #### 5. 启动服务
