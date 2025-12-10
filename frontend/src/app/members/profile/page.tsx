@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '../../lib/api';
+import { apiClient } from '@/lib/api';
 
 interface MemberProfile {
   id: string;
@@ -53,12 +53,12 @@ export default function MemberProfilePage() {
       }
 
       if (profileResponse.data) {
-        setMember(profileResponse.data);
-        
+        setMember(profileResponse.data as MemberProfile);
+
         // 获取会员统计信息
-        const statsResponse = await apiClient.getMemberOrderStats(profileResponse.data.id);
+        const statsResponse = await apiClient.getMemberOrderStats((profileResponse.data as any).id);
         if (!statsResponse.error && statsResponse.data) {
-          setStats(statsResponse.data);
+          setStats(statsResponse.data as MemberStats);
         }
       }
     } catch (error) {

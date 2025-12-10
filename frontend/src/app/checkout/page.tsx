@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import ProductList from '../../components/ProductList';
-import ShoppingCart from '../../components/ShoppingCart';
-import MemberCard, { MemberInfo as MemberCardInfo } from '../../components/MemberCard';
-import { createOrder, apiClient } from '../../lib/api';
+import ProductList from '@/components/ProductList';
+import ShoppingCart from '@/components/ShoppingCart';
+import MemberCard, { MemberInfo as MemberCardInfo } from '@/components/MemberCard';
+import { createOrder, apiClient } from '@/lib/api';
 
 interface CartItem {
   id: string;
@@ -72,7 +72,7 @@ export default function CheckoutPage() {
         if (userData.role === 'customer') {
           const memberResponse = await apiClient.getMember(userData.id);
           if (!memberResponse.error && memberResponse.data) {
-            setMember(memberResponse.data);
+            setMember(memberResponse.data as MemberProfile);
           }
         }
       } else {
@@ -176,19 +176,20 @@ export default function CheckoutPage() {
         setCart([]);
 
         // 更新会员信息（如果订单完成）
-        if (member && response.data.pointsEarned) {
+        const orderData = response.data as any;
+        if (member && orderData.pointsEarned) {
           setMember(prev => prev ? {
             ...prev,
-            points: prev.points + response.data.pointsEarned,
-            totalSpent: prev.totalSpent + response.data.finalAmount
+            points: prev.points + orderData.pointsEarned,
+            totalSpent: prev.totalSpent + orderData.finalAmount
           } : null);
         }
 
         // 显示成功消息
-        alert(`订单创建成功！\n订单号: ${response.data.orderNumber}\n金额: ¥${response.data.finalAmount.toFixed(2)}\n${response.data.pointsEarned ? `获得积分: ${response.data.pointsEarned}` : ''}`);
+        alert(`订单创建成功！\n订单号: ${orderData.orderNumber}\n金额: ¥${orderData.finalAmount.toFixed(2)}\n${orderData.pointsEarned ? `获得积分: ${orderData.pointsEarned}` : ''}`);
 
         // 可以跳转到订单详情页面或继续购物
-        // router.push(`/orders/${response.data.id}`);
+        // router.push(`/orders/${orderData.id}`);
       }
     } catch (error) {
       console.error('Checkout failed:', error);
@@ -197,9 +198,9 @@ export default function CheckoutPage() {
   };
 
   const calculateDiscount = () => {
-    if (!member) return { memberDiscount: 0, pointsDiscount: 0, totalDiscount: 0 };
-
     const subtotal = cart.reduce((sum, item) => sum + item.subtotal, 0);
+
+    if (!member) return { memberDiscount: 0, pointsDiscount: 0, totalDiscount: 0, finalAmount: subtotal, pointsUsed: 0 };
 
     // 会员折扣
     const discountRates = {

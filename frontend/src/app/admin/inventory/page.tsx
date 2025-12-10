@@ -15,8 +15,9 @@ import {
   Upload,
   Calendar,
   DollarSign,
+  CheckCircle,
 } from 'lucide-react';
-import PermissionGuard from '../../components/PermissionGuard';
+import PermissionGuard from '@/components/PermissionGuard';
 
 interface InventoryItem {
   id: number;
@@ -109,7 +110,7 @@ const InventoryManagementPage: React.FC = () => {
     }
   };
 
-  const fetchLow获取库存列表失败StockAlerts = async () => {
+  const fetchLowStockAlerts = async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/inventory/alerts', {

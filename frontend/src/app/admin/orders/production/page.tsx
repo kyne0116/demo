@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import OrderQueue from '../../components/OrderQueue';
-import PermissionGuard from '../../components/PermissionGuard';
+import OrderQueue from '@/components/OrderQueue';
+import PermissionGuard from '@/components/PermissionGuard';
 
 export default function OrderProductionPage() {
   return (

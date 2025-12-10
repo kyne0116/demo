@@ -17,7 +17,7 @@ import {
   Coffee,
   TrendingUp,
 } from 'lucide-react';
-import PermissionGuard from '../../components/PermissionGuard';
+import PermissionGuard from '@/components/PermissionGuard';
 
 const navigation = [
   {

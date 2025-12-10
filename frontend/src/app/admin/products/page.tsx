@@ -15,7 +15,7 @@ import {
   Eye,
   BarChart3,
 } from 'lucide-react';
-import PermissionGuard from '../../components/PermissionGuard';
+import PermissionGuard from '@/components/PermissionGuard';
 
 interface Product {
   id: string;

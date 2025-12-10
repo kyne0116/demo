@@ -27,7 +27,7 @@ import {
   Calendar,
   Filter,
 } from 'lucide-react';
-import PermissionGuard from '../../components/PermissionGuard';
+import PermissionGuard from '@/components/PermissionGuard';
 
 interface ProductionStats {
   totalOrders: number;

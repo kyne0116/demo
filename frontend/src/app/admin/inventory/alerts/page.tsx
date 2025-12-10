@@ -16,8 +16,8 @@ import {
   Package,
   TrendingDown,
 } from 'lucide-react';
-import PermissionGuard from '../components/PermissionGuard';
-import InventoryAlert from '../components/InventoryAlert';
+import PermissionGuard from '@/components/PermissionGuard';
+import InventoryAlert from '@/components/InventoryAlert';
 
 interface AlertItem {
   id: number;
