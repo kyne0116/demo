@@ -24,7 +24,7 @@ export class ProductRecipeService {
   async createRecipe(createDto: CreateProductRecipeDto): Promise<ProductRecipe> {
     // 验证产品是否存在
     const product = await this.productRepository.findOne({
-      where: { id: createDto.productId },
+      where: { id: createDto.productId.toString() },
     });
 
     if (!product) {
@@ -51,7 +51,7 @@ export class ProductRecipeService {
       // 检查是否已存在该原料的配方
       const existingRecipe = await this.recipeRepository.findOne({
         where: {
-          product: { id: createDto.productId },
+          product: { id: createDto.productId.toString() },
           inventoryItem: { id: ingredientDto.inventoryItemId },
         },
       });
@@ -82,7 +82,7 @@ export class ProductRecipeService {
    */
   async getRecipeByProduct(productId: number): Promise<ProductRecipe> {
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem', 'product'],
     });
 
@@ -111,7 +111,7 @@ export class ProductRecipeService {
     }
 
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem', 'product'],
     });
 
@@ -119,12 +119,12 @@ export class ProductRecipeService {
       return [];
     }
 
-    return recipe.ingredients.map(ingredient => ({
-      inventoryItemId: ingredient.inventoryItem.id,
-      name: ingredient.inventoryItem.name,
-      unit: ingredient.unit,
-      requiredQuantity: Number(ingredient.getAdjustedQuantity()) * quantity,
-    }));
+    return [{
+      inventoryItemId: recipe.inventoryItem.id,
+      name: recipe.inventoryItem.name,
+      unit: recipe.unit,
+      requiredQuantity: Number(recipe.getAdjustedQuantity()) * quantity,
+    }];
   }
 
   /**
@@ -132,15 +132,15 @@ export class ProductRecipeService {
    */
   async checkIngredientAvailability(productId: number, quantity: number): Promise<boolean | any> {
     const requiredIngredients = await this.calculateRequiredIngredients(productId, quantity);
-    
+
     if (requiredIngredients.length === 0) {
       return true; // 没有配方或数量为0，认为可用
     }
 
-    [];
+    const unavailableIngredients: any[] = [];
 
     for (const ingredient of requiredIngredients) {
-      const const unavailableIngredients = inventoryItem = await this.inventoryRepository.findOne({
+      const inventoryItem = await this.inventoryRepository.findOne({
         where: { id: ingredient.inventoryItemId },
       });
 
@@ -189,7 +189,7 @@ export class ProductRecipeService {
    */
   async updateRecipe(productId: number, updateDto: UpdateProductRecipeDto): Promise<ProductRecipe> {
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem', 'product'],
     });
 
@@ -200,7 +200,7 @@ export class ProductRecipeService {
     // 更新原料信息
     if (updateDto.ingredients) {
       // 删除现有原料
-      await this.recipeRepository.delete({ product: { id: productId } });
+      await this.recipeRepository.delete({ product: { id: productId.toString() } });
 
       // 添加新原料
       for (const ingredientDto of updateDto.ingredients) {
@@ -236,7 +236,7 @@ export class ProductRecipeService {
    */
   async deleteRecipe(productId: number): Promise<void> {
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
     });
 
     if (!recipe) {
@@ -252,7 +252,7 @@ export class ProductRecipeService {
   async duplicateRecipe(sourceProductId: number, targetProductId: number): Promise<ProductRecipe> {
     // 检查源产品配方
     const sourceRecipe = await this.recipeRepository.findOne({
-      where: { product: { id: sourceProductId } },
+      where: { product: { id: sourceProductId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem'],
     });
 
@@ -262,7 +262,7 @@ export class ProductRecipeService {
 
     // 检查目标产品
     const targetProduct = await this.productRepository.findOne({
-      where: { id: targetProductId },
+      where: { id: targetProductId.toString() },
     });
 
     if (!targetProduct) {
@@ -271,7 +271,7 @@ export class ProductRecipeService {
 
     // 检查目标产品是否已有配方
     const existingRecipe = await this.recipeRepository.findOne({
-      where: { product: { id: targetProductId } },
+      where: { product: { id: targetProductId.toString() } },
     });
 
     if (existingRecipe) {
@@ -279,24 +279,18 @@ export class ProductRecipeService {
     }
 
     // 复制配方
-    const newIngredients = [];
+    const newIngredient = this.recipeRepository.create({
+      product: targetProduct,
+      inventoryItem: sourceRecipe.inventoryItem,
+      quantity: sourceRecipe.quantity,
+      unit: sourceRecipe.unit,
+      notes: sourceRecipe.notes,
+      order: sourceRecipe.order,
+      isRequired: sourceRecipe.isRequired,
+      usagePercentage: sourceRecipe.usagePercentage,
+    });
 
-    for (const sourceIngredient of sourceRecipe.ingredients) {
-      const newIngredient = this.recipeRepository.create({
-        product: targetProduct,
-        inventoryItem: sourceIngredient.inventoryItem,
-        quantity: sourceIngredient.quantity,
-        unit: sourceIngredient.unit,
-        notes: sourceIngredient.notes,
-        order: sourceIngredient.order,
-        isRequired: sourceIngredient.isRequired,
-        usagePercentage: sourceIngredient.usagePercentage,
-      });
-
-      newIngredients.push(newIngredient);
-    }
-
-    const savedRecipe = await this.recipeRepository.save(newIngredients[0]);
+    const savedRecipe = await this.recipeRepository.save(newIngredient);
     
     // 返回完整的配方信息
     return await this.getRecipeByProduct(targetProductId);
@@ -307,7 +301,7 @@ export class ProductRecipeService {
    */
   async validateRecipeIntegrity(productId: number): Promise<any> {
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem'],
     });
 
@@ -321,28 +315,26 @@ export class ProductRecipeService {
 
     const invalidIngredients = [];
 
-    for (const ingredient of recipe.ingredients) {
-      if (!ingredient.inventoryItem.isActive) {
-        invalidIngredients.push({
-          inventoryItemId: ingredient.inventoryItem.id,
-          name: ingredient.inventoryItem.name,
-          reason: '原料已停用',
-        });
-      }
+    if (!recipe.inventoryItem.isActive) {
+      invalidIngredients.push({
+        inventoryItemId: recipe.inventoryItem.id,
+        name: recipe.inventoryItem.name,
+        reason: '原料已停用',
+      });
+    }
 
-      if (ingredient.quantity <= 0) {
-        invalidIngredients.push({
-          inventoryItemId: ingredient.inventoryItem.id,
-          name: ingredient.inventoryItem.name,
-          reason: '原料数量无效',
-        });
-      }
+    if (recipe.quantity <= 0) {
+      invalidIngredients.push({
+        inventoryItemId: recipe.inventoryItem.id,
+        name: recipe.inventoryItem.name,
+        reason: '原料数量无效',
+      });
     }
 
     return {
       isValid: invalidIngredients.length === 0,
       invalidIngredients,
-      totalIngredients: recipe.ingredients.length,
+      totalIngredients: 1,
     };
   }
 
@@ -351,7 +343,7 @@ export class ProductRecipeService {
    */
   async getRecipeCost(productId: number): Promise<number> {
     const recipe = await this.recipeRepository.findOne({
-      where: { product: { id: productId } },
+      where: { product: { id: productId.toString() } },
       relations: ['ingredients', 'ingredients.inventoryItem'],
     });
 
@@ -359,10 +351,7 @@ export class ProductRecipeService {
       return 0;
     }
 
-    return recipe.ingredients.reduce(
-      (total, ingredient) => total + ingredient.getIngredientCost(),
-      0,
-    );
+    return recipe.getIngredientCost();
   }
 
   /**
@@ -370,7 +359,7 @@ export class ProductRecipeService {
    */
   async getProductProfitability(productId: number): Promise<any> {
     const product = await this.productRepository.findOne({
-      where: { id: productId },
+      where: { id: productId.toString() },
       relations: ['recipes', 'recipes.inventoryItem'],
     });
 

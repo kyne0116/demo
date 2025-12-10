@@ -311,15 +311,15 @@ export class InventoryService {
 
     const expiringItems = await this.inventoryRepository
       .createQueryBuilder('inventory')
-      .where('inventory.expirationDate IS NOT NULL')
-      .andWhere('inventory.expirationDate <= :expiryThreshold', { expiryThreshold })
-      .andWhere('inventory.expirationDate >= :today', { today })
+      .where('inventory.expiryDate IS NOT NULL')
+      .andWhere('inventory.expiryDate <= :expiryThreshold', { expiryThreshold })
+      .andWhere('inventory.expiryDate >= :today', { today })
       .andWhere('inventory.isActive = :isActive', { isActive: true })
       .getMany();
 
     return expiringItems.map(item => {
       const daysUntilExpiry = Math.ceil(
-        (new Date(item.expirationDate).getTime() - today.getTime()) / (1000 * 3600 * 24),
+        (new Date(item.expiryDate).getTime() - today.getTime()) / (1000 * 3600 * 24),
       );
       
       return {
@@ -328,7 +328,7 @@ export class InventoryService {
         category: item.category,
         currentStock: item.currentStock,
         unit: item.unit,
-        expirationDate: item.expirationDate,
+        expirationDate: item.expiryDate,
         daysUntilExpiry,
         priority: daysUntilExpiry <= 1 ? 'HIGH' : 'MEDIUM',
         wasteRisk: this.calculateWasteRisk(item, daysUntilExpiry),

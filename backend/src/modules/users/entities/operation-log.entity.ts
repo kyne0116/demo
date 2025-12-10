@@ -1,13 +1,14 @@
-import { 
-  Entity, 
-  Column, 
-  PrimaryGeneratedColumn, 
-  CreateDateColumn, 
-  ManyToOne, 
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  ManyToOne,
   JoinColumn,
   Index
 } from 'typeorm';
 import { User } from './user.entity';
+import { InventoryItem } from '../../inventory/entities/inventory-item.entity';
 
 // 操作类型枚举
 export enum OperationType {
@@ -80,7 +81,7 @@ export class OperationLog {
   @Column('text', { nullable: true })
   details: string | null; // 操作详情（JSON字符串）
 
-  @Column('inet', { nullable: true })
+  @Column('varchar', { length: 45, nullable: true })
   ipAddress: string | null; // 操作IP地址
 
   @Column('text', { nullable: true })
@@ -103,6 +104,10 @@ export class OperationLog {
   @ManyToOne(() => User, user => user.operationLogs, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
+
+  @ManyToOne(() => InventoryItem, item => item.operationLogs, { onDelete: 'SET NULL', nullable: true })
+  @JoinColumn({ name: 'inventoryItemId' })
+  inventoryItem: InventoryItem | null;
 
   // 辅助方法
   getDetails(): any {

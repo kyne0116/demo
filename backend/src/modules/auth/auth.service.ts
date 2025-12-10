@@ -33,11 +33,11 @@ export class AuthService {
       throw new UnauthorizedException('账户已被禁用');
     }
 
-    const payload = { 
-      sub: user.id, 
-      email: user.email, 
-      role: user.role,
-      name: user.name 
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.roles[0] || '', // 取第一个角色
+      name: user.name
     };
 
     return {
@@ -46,7 +46,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role,
+        role: user.roles[0] || '',
         phone: user.phone,
       },
     };

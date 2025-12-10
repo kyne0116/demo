@@ -95,11 +95,14 @@ export class ProductsService {
     });
 
     // 为每个产品添加库存状态
-    return products.map(product => ({
-      ...product,
-      inStock: product.isInStock(),
-      canBeMade: product.canBeMade(),
-    }));
+    return products.map(product => {
+      // 确保返回的仍然是Product实例
+      const productWithStatus = Object.assign(product, {
+        inStock: product.isInStock(),
+        canBeMade: product.canBeMade(),
+      });
+      return productWithStatus;
+    });
   }
 
   /**

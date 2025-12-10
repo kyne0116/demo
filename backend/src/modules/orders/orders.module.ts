@@ -10,12 +10,14 @@ import { OrderCalculationService } from './services/order-calculation.service';
 import { ProductionService } from './production.service';
 import { InventoryModule } from '../inventory/inventory.module';
 import { MembersModule } from '../members/members.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, OrderItem, Product]),
     InventoryModule,
     MembersModule,
+    AuthModule,  // 添加AuthModule以使用RolesGuard
   ],
   controllers: [
     OrdersController,

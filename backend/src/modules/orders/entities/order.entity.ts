@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { OrderItem } from '../orders/entities/order-item.entity';
+import { OrderItem } from './order-item.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',        // 待确认
@@ -123,7 +123,7 @@ export class Order {
   feedback?: string; // 客户反馈
 
   // 关系
-  @OneToMany(() => OrderItem, item => item.order)
+  @OneToMany(() => OrderItem, item => item.product)
   orderItems: OrderItem[];
 
   // 计算属性

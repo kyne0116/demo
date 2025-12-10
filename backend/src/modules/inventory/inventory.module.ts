@@ -10,9 +10,11 @@ import { InventoryItem } from './entities/inventory-item.entity';
 import { Product } from '../products/entities/product.entity';
 import { OrderItem } from '../orders/entities/order-item.entity';
 import { Order } from '../orders/entities/order.entity';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([
       InventoryItem,
       Product,
@@ -30,6 +32,11 @@ import { Order } from '../orders/entities/order.entity';
     InventoryAlertService,
     InventoryMetricsService,
   ],
-  exports: [InventoryService, InventoryAlertService, InventoryMetricsService],
+  exports: [
+    TypeOrmModule,
+    InventoryService,
+    InventoryAlertService,
+    InventoryMetricsService,
+  ],
 })
 export class InventoryModule {}

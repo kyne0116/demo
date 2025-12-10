@@ -15,8 +15,8 @@ import {
   OrderQueue 
 } from './production.service';
 import { OrderStatus, ProductionStage, OrderPriority } from './entities/order.entity';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Permissions } from '../auth/decorators/permissions.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Permissions } from '../../common/guards/roles.guard';
 
 @Controller('orders/production')
 @UseGuards(RolesGuard)

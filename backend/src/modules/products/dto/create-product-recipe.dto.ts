@@ -1,4 +1,4 @@
-import { IsInt, IsArray, ValidateNested, IsNumber, IsString, IsOptional, IsBoolean, Min } from 'class-validator';
+import { IsInt, IsArray, ValidateNested, IsNumber, IsString, IsOptional, IsBoolean, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class IngredientDto {

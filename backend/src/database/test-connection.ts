@@ -1,13 +1,11 @@
 /**
  * 数据库连接测试脚本
  * 用于验证环境变量配置的数据库连接是否正常工作
- * 
+ *
  * 使用方法:
  * npx ts-node src/database/test-connection.ts
  */
 
-import { ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
 import * as mysql from 'mysql2/promise';
 
 interface DatabaseConfig {
@@ -22,7 +20,7 @@ async function testDatabaseConnection() {
   console.log('🔍 开始测试数据库连接...\n');
 
   try {
-    // 读取环境变量（模拟NestJS ConfigService）
+    // 读取环境变量
     const config: DatabaseConfig = {
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT || '3306'),
@@ -49,30 +47,19 @@ async function testDatabaseConnection() {
 
     console.log('✅ 基础连接成功!');
 
-    // 检查数据库是否存在
-    console.log('\n📊 检查数据库...');
-    const [rows] = await connection.execute('SELECT DATABASE() as current_db');
-    const currentDb = (rows as any[])[0]?.current_db;
-    console.log(`   当前数据库: ${currentDb}`);
-
     // 尝试创建数据库（如果不存在）
-    if (config.database && config.database !== currentDb) {
-      console.log(`\n🏗️  尝试创建数据库: ${config.database}`);
-      try {
-        await connection.execute(`CREATE DATABASE IF NOT EXISTS \`${config.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
-        console.log('✅ 数据库创建成功!');
-      } catch (error: any) {
-        console.log(`❌ 数据库创建失败: ${error.message}`);
-      }
+    console.log('\n🏗️  尝试创建数据库...');
+    try {
+      await connection.query(`CREATE DATABASE IF NOT EXISTS \`${config.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+      console.log(`✅ 数据库 ${config.database} 创建成功!`);
+    } catch (error: any) {
+      console.log(`❌ 数据库创建失败: ${error.message}`);
     }
 
-    // 切换到目标数据库
-    if (config.database && config.database !== currentDb) {
-      await connection.execute(`USE \`${config.database}\``);
-      console.log(`\n🔄 已切换到数据库: ${config.database}`);
-    }
+    // 关闭基础连接
+    await connection.end();
 
-    // 测试完整连接
+    // 测试完整连接（直接连接到目标数据库）
     console.log('\n🔌 测试完整连接...');
     const fullConnection = await mysql.createConnection({
       host: config.host,
@@ -86,19 +73,18 @@ async function testDatabaseConnection() {
     console.log('✅ 完整连接成功!');
 
     // 获取数据库版本信息
-    const [versionRows] = await fullConnection.execute('SELECT VERSION() as version, NOW() as now_time');
+    const [versionRows] = await fullConnection.query('SELECT VERSION() as version, NOW() as now_time');
     const versionInfo = (versionRows as any[])[0];
     console.log(`\n📋 数据库信息:`);
     console.log(`   MySQL版本: ${versionInfo.version}`);
     console.log(`   服务器时间: ${versionInfo.now_time}`);
 
     // 检查字符集
-    const [charsetRows] = await fullConnection.execute('SELECT @@character_set_database as charset, @@collation_database as collation');
+    const [charsetRows] = await fullConnection.query('SELECT @@character_set_database as charset, @@collation_database as collation');
     const charsetInfo = (charsetRows as any[])[0];
     console.log(`   字符集: ${charsetInfo.charset} (${charsetInfo.collation})`);
 
     await fullConnection.end();
-    await connection.end();
 
     console.log('\n🎉 数据库连接测试完成 - 全部成功!');
 
@@ -106,7 +92,7 @@ async function testDatabaseConnection() {
     console.error('\n❌ 数据库连接测试失败!');
     console.error(`   错误类型: ${error.code || 'Unknown'}`);
     console.error(`   错误信息: ${error.message}`);
-    
+
     if (error.code === 'ER_ACCESS_DENIED_ERROR') {
       console.log('\n💡 建议检查:');
       console.log('   - 用户名和密码是否正确');
@@ -123,7 +109,7 @@ async function testDatabaseConnection() {
       console.log('   - 数据库是否存在');
       console.log('   - 用户是否有访问权限');
     }
-    
+
     process.exit(1);
   }
 }

@@ -22,16 +22,6 @@ export enum InventoryCategory {
   OTHER = 'OTHER',       // 其他类
 }
 
-export enum OperationType {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE',
-  DELETE = 'DELETE',
-  ADJUST = 'ADJUST',
-  DEDUCT = 'DEDUCT',
-  RESTORE = 'RESTORE',
-  ALERT = 'ALERT',
-}
-
 @Entity('inventory_items')
 export class InventoryItem {
   @PrimaryGeneratedColumn()
@@ -69,7 +59,7 @@ export class InventoryItem {
   description: string; // 描述
 
   @Column({ type: 'date', nullable: true })
-  expirationDate: Date | null; // 过期日期
+  expiryDate: Date | null; // 过期日期
 
   @Column({ type: 'varchar', length: 100, nullable: true })
   batchNumber: string | null; // 批号
@@ -95,7 +85,7 @@ export class InventoryItem {
 
   // 获取库存状态
   getStockStatus(): 'NORMAL' | 'LOW' | 'OVERSTOCK' | 'EXPIRED' {
-    if (this.expirationDate && new Date() > this.expirationDate) {
+    if (this.expiryDate && new Date() > this.expiryDate) {
       return 'EXPIRED';
     }
     if (this.currentStock > this.maxStock) {
@@ -114,9 +104,9 @@ export class InventoryItem {
 
   // 检查是否即将过期（7天内）
   isExpiringSoon(days: number = 7): boolean {
-    if (!this.expirationDate) return false;
+    if (!this.expiryDate) return false;
     const today = new Date();
-    const expiryDate = new Date(this.expirationDate);
+    const expiryDate = new Date(this.expiryDate);
     const daysDiff = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
     return daysDiff <= days && daysDiff >= 0;
   }

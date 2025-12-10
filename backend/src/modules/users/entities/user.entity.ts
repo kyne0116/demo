@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Order } from '../orders/entities/order.entity';
-import { MemberProfile } from '../members/entities/member-profile.entity';
+import { Order } from '../../orders/entities/order.entity';
+import { MemberProfile } from '../../members/entities/member-profile.entity';
 import { OperationLog } from './operation-log.entity';
 
 // 角色定义 - 支持多角色
@@ -70,7 +70,7 @@ export class User {
   name: string;
 
   // 支持多角色系统
-  @Column('simple-array', { default: '' })
+  @Column('simple-array')
   roles: string[];
 
   @Column({ default: true })
@@ -92,11 +92,8 @@ export class User {
   updatedAt: Date;
 
   // 关系
-  @OneToMany(() => Order, order => order.customer)
+  @OneToMany(() => Order, order => order.customerId)
   orders: Order[];
-
-  @OneToMany(() => MemberProfile, member => member.user)
-  memberProfiles: MemberProfile[];
 
   @OneToMany(() => OperationLog, log => log.user)
   operationLogs: OperationLog[];

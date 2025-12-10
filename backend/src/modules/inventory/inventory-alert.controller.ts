@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { InventoryAlertService, InventoryAlert, AlertStatistics } from './inventory-alert.service';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Permissions } from '../auth/decorators/permissions.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Permissions } from '../../common/guards/roles.guard';
 
 @Controller('inventory/alerts')
 @UseGuards(RolesGuard)

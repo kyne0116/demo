@@ -49,7 +49,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       password,
       database,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: this.configService.get('NODE_ENV') !== 'production',
+      synchronize: false, // 临时关闭自动同步，避免索引冲突
       logging: this.configService.get('NODE_ENV') === 'development',
 
       // 连接池配置
@@ -81,7 +81,6 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
 
         // Unicode支持
         supportUnicode: useUnicode,
-        charset: characterEncoding,
 
         // 其他MySQL特定参数
         multipleStatements: false,

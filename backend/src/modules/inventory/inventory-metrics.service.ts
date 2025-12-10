@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InventoryItem } from './entities/inventory-item.entity';
 import { OrderItem } from '../orders/entities/order-item.entity';
 import { Order, OrderStatus } from '../orders/entities/order.entity';
+import { OperationType } from '../users/entities/operation-log.entity';
 
 export interface InventoryMetrics {
   totalItems: number;
@@ -191,12 +192,12 @@ export class InventoryMetricsService {
   private async getTopMovingItems(items: InventoryItem[]) {
     // 简化的周转率计算，基于操作日志
     const itemsWithTurnover = items.map(item => {
-      const consumptionLogs = item.operationLogs?.filter(log => 
-        log.operationType === 'ADJUST' && Number(log.quantityChange) < 0
+      const consumptionLogs = item.operationLogs?.filter(log =>
+        log.operation === OperationType.INVENTORY_UPDATE && Number(log.metadata?.quantityChange || 0) < 0
       ) || [];
 
-      const totalConsumed = consumptionLogs.reduce((sum, log) => 
-        sum + Math.abs(Number(log.quantityChange)), 0
+      const totalConsumed = consumptionLogs.reduce((sum, log) =>
+        sum + Math.abs(Number(log.metadata?.quantityChange || 0)), 0
       );
 
       const turnoverRate = Number(item.minStock) > 0 ? 
@@ -269,12 +270,12 @@ export class InventoryMetricsService {
     if (items.length === 0) return 0;
 
     const totalTurnover = items.reduce((sum, item) => {
-      const consumptionLogs = item.operationLogs?.filter(log => 
-        log.operationType === 'ADJUST' && Number(log.quantityChange) < 0
+      const consumptionLogs = item.operationLogs?.filter(log =>
+        log.operation === OperationType.INVENTORY_UPDATE && Number(log.metadata?.quantityChange || 0) < 0
       ) || [];
 
-      const totalConsumed = consumptionLogs.reduce((acc, log) => 
-        acc + Math.abs(Number(log.quantityChange)), 0
+      const totalConsumed = consumptionLogs.reduce((acc, log) =>
+        acc + Math.abs(Number(log.metadata?.quantityChange || 0)), 0
       );
 
       const turnover = Number(item.minStock) > 0 ? 

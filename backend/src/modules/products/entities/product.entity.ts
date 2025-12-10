@@ -115,4 +115,3 @@ export class Product {
     return this.isActive && this.isAvailable && this.isInStock();
   }
 }
-}

@@ -106,9 +106,9 @@ export class ProductRecipe {
     if (this.inventoryItem.currentStock < this.getAdjustedQuantity()) return false;
     
     // 检查是否过期
-    if (this.inventoryItem.expirationDate) {
+    if (this.inventoryItem.expiryDate) {
       const today = new Date();
-      if (today > new Date(this.inventoryItem.expirationDate)) {
+      if (today > new Date(this.inventoryItem.expiryDate)) {
         return false;
       }
     }

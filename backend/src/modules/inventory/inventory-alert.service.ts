@@ -4,6 +4,7 @@ import { Repository, LessThan } from 'typeorm';
 import { InventoryItem } from './entities/inventory-item.entity';
 import { OrderItem } from '../orders/entities/order-item.entity';
 import { Order, OrderStatus } from '../orders/entities/order.entity';
+import { OperationType } from '../users/entities/operation-log.entity';
 
 export interface InventoryAlert {
   id: number;
@@ -280,16 +281,16 @@ export class InventoryAlertService {
   private calculateAverageDailyConsumption(item: InventoryItem): number {
     // 这里应该根据实际的订单数据计算消耗量
     // 简化实现，基于操作日志计算
-    const consumptionLogs = item.operationLogs?.filter(log => 
-      log.operationType === 'ADJUST' && Number(log.quantityChange) < 0
+    const consumptionLogs = item.operationLogs?.filter(log =>
+      log.operation === OperationType.INVENTORY_UPDATE && Number(log.metadata?.quantityChange || 0) < 0
     ) || [];
 
     if (consumptionLogs.length === 0) {
       return 0.1; // 默认每天消耗0.1个单位
     }
 
-    const totalConsumed = consumptionLogs.reduce((sum, log) => 
-      sum + Math.abs(Number(log.quantityChange)), 0
+    const totalConsumed = consumptionLogs.reduce((sum, log) =>
+      sum + Math.abs(Number(log.metadata?.quantityChange || 0)), 0
     );
 
     const daysSpan = Math.max(1, Math.floor((Date.now() - consumptionLogs[consumptionLogs.length - 1].createdAt.getTime()) / (1000 * 60 * 60 * 24)));
