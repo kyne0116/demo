@@ -75,333 +75,47 @@ milktea/
 ## 部署与启动
 
 ### 环境要求
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- MySQL 数据库
 
-- **Node.js**: >= 18.0.0
-- **npm**: >= 8.0.0 (或使用 yarn/pnpm)
-- **数据库**: SQLite (开发环境) / MySQL/PostgreSQL (生产环境)
+### 安装依赖
 
-### 快速启动
-
-#### 1. 克隆项目
 ```bash
-git clone <repository-url>
-cd demo
-```
-
-#### 2. 安装依赖
-
-**后端依赖**
-```bash
+# 后端依赖
 cd backend
+npm install
+
+# 前端依赖
+cd frontend
 npm install
 ```
 
-**前端依赖**
-```bash
-cd ../frontend
-npm install
-```
+### 数据库初始化
 
-#### 3. 环境配置
-
-**后端环境变量**
 ```bash
 cd backend
-cp .env.example .env
+npm run migration:run    # 运行数据库迁移
+npm run seed:run         # 填充初始数据
 ```
 
-**数据库配置选项:**
+### 启动服务
 
-**选项1: MySQL (推荐生产环境)**
-```env
-# 数据库连接信息
-DB_HOST=localhost
-DB_PORT=3306
-DB_DATABASE=copyright
-DB_USERNAME=root
-DB_PASSWORD=
-
-# MySQL JDBC连接参数
-DB_USE_SSL=false
-DB_SERVER_TIMEZONE=Asia/Shanghai
-DB_ALLOW_PUBLIC_KEY_RETRIEVAL=true
-DB_USE_UNICODE=true
-DB_CHARACTER_ENCODING=utf8
-DB_CREATE_DATABASE_IF_NOT_EXIST=true
-DB_USE_AFFECTED_ROWS=true
-
-# 连接池配置
-DB_CONNECTION_TIMEOUT=30000
-DB_ACQUIRE_TIMEOUT=60000
-DB_TIMEOUT=60000
-DB_RETRY_ATTEMPTS=3
-DB_RETRY_DELAY=3000
-
-# JWT配置
-JWT_SECRET=your-super-secret-jwt-key-here
-JWT_EXPIRES_IN=7d
-
-# 应用配置
-NODE_ENV=development
-PORT=3001
-FRONTEND_URL=http://localhost:3000
-```
-
-**选项2: SQLite (开发环境)**
-```env
-# 数据库配置 (使用SQLite)
-DB_TYPE=sqlite
-DB_DATABASE=./data/milktea.db
-
-# 其他配置保持不变
-JWT_SECRET=your-super-secret-jwt-key
-JWT_EXPIRES_IN=24h
-NODE_ENV=development
-PORT=3001
-```
-
-**快速配置数据库连接:**
 ```bash
-# 测试数据库连接
-cd backend
-npm run db:test
-```
-
-**前端环境变量**
-```bash
-cd ../frontend
-cp .env.local.example .env.local
-```
-
-编辑 `.env.local` 文件：
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_APP_NAME=奶茶店管理系统
-```
-
-#### 4. 数据库初始化
-
-**MySQL环境 (推荐)**
-```bash
-cd backend
-
-# 测试数据库连接
-npm run db:test
-
-# 如果测试成功，运行迁移和种子数据
-npm run migration:run
-npm run seed:run
-```
-
-**SQLite环境 (开发测试)**
-```bash
-cd backend
-
-# SQLite不需要数据库连接测试
-# 直接运行迁移和种子数据
-npm run migration:run
-npm run seed:run
-```
-
-**数据库管理命令:**
-```bash
-npm run db:test         # 测试数据库连接
-npm run db:check        # 检查数据库状态 (同db:test)
-npm run migration:run   # 运行数据库迁移
-npm run seed:run        # 填充初始数据
-npm run seed:revert     # 清除测试数据
-```
-
-#### 5. 启动服务
-
-**开发模式启动**
-```bash
-# 启动后端服务 (端口 3001)
+# 启动后端 (端口 3001)
 cd backend
 npm run start:dev
 
-# 启动前端服务 (端口 3000) - 新开终端窗口
+# 启动前端 (端口 3000)
 cd frontend
 npm run dev
 ```
 
-**生产模式启动**
-```bash
-# 构建和启动后端
-cd backend
-npm run build
-npm run start:prod
+### 访问系统
 
-# 构建和启动前端
-cd frontend
-npm run build
-npm run start
-```
-
-### 数据初始化
-
-#### 管理员账户
-运行种子数据脚本后会自动创建以下测试账户：
-
-**管理员账户**
-- **邮箱**: admin@example.com
-- **用户名**: admin (登录时可使用邮箱或用户名)
-- **密码**: admin123
-- **角色**: 系统管理员
-
-**经理账户**
-- **邮箱**: manager@example.com
-- **密码**: manager123
-- **角色**: 门店经理
-
-**收银员账户**
-- **邮箱**: cashier@example.com
-- **密码**: cashier123
-- **角色**: 收银员
-
-#### 重置数据
-如需重新初始化数据：
-```bash
-cd backend
-npm run seed:revert   # 清除测试数据
-npm run seed:run      # 重新创建测试数据
-```
-
-### 系统访问
-
-#### 前端访问
-- **开发环境**: http://localhost:3000
-- **生产环境**: http://your-domain.com
-
-#### 后端API
-- **开发环境**: http://localhost:3001
-- **API文档**: http://localhost:3001/api/docs (如启用Swagger)
-
-#### 管理员登录
-1. 访问管理员登录页面
-2. 使用以下任一账户登录：
-   - **管理员**: admin@example.com / admin123
-   - **经理**: manager@example.com / manager123
-   - **收银员**: cashier@example.com / cashier123
-3. 登录后根据角色权限访问相应功能
-
-#### 常用功能入口
-- **订单管理**: `/admin/orders`
-- **产品管理**: `/admin/products`
-- **库存管理**: `/admin/inventory`
-- **会员管理**: `/admin/members`
-- **员工管理**: `/admin/staff`
-- **库存监控**: `/admin/inventory/monitor`
-- **制作管理**: `/admin/orders/production`
-- **制作统计**: `/admin/orders/stats`
-
-### 故障排除
-
-#### 常见问题
-
-**端口占用**
-```bash
-# 查看端口占用
-lsof -i :3000
-lsof -i :3001
-
-# 终止占用进程
-kill -9 <PID>
-```
-
-**数据库连接失败**
-- 检查数据库服务是否运行
-- 验证环境变量配置
-- 确保数据库用户权限正确
-
-**依赖安装失败**
-```bash
-# 清理npm缓存
-npm cache clean --force
-
-# 删除node_modules重新安装
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**权限错误**
-- 确保Node.js版本符合要求
-- 检查文件系统权限
-- 以管理员身份运行命令
-
-#### 日志查看
-```bash
-# 后端日志
-cd backend
-tail -f logs/application.log
-
-# 前端日志 (浏览器控制台)
-# 在浏览器开发者工具中查看
-```
-
-### 生产部署
-
-#### Docker部署
-```bash
-# 构建镜像
-docker-compose build
-
-# 启动服务
-docker-compose up -d
-
-# 查看日志
-docker-compose logs -f
-```
-
-#### PM2部署 (后端)
-```bash
-# 安装PM2
-npm install -g pm2
-
-# 启动应用
-pm2 start dist/main.js --name milktea-backend
-
-# 查看状态
-pm2 status
-pm2 logs milktea-backend
-```
-
-#### Nginx配置 (前端)
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-### 监控和维护
-
-#### 健康检查
-- 前端: `GET /api/health`
-- 后端: `GET /health`
-
-#### 数据备份
-```bash
-# SQLite备份
-cp backend/data/milktea.db backup/milktea-$(date +%Y%m%d).db
-
-# MySQL备份
-mysqldump -u username -p milktea_db > backup/milktea-$(date +%Y%m%d).sql
-```
-
-#### 性能监控
-- 使用PM2监控后端性能
-- 通过浏览器开发者工具监控前端性能
-- 数据库性能监控 (如使用MySQL Workbench)
+- 前端地址: http://localhost:3000
+- 后端API: http://localhost:3001
+- 测试账号: admin@example.com / admin123
 
 ## 许可证
 
