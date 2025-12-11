@@ -1,51 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const { email, password } = body;
 
-    // 模拟登录验证 - 在实际应用中应该调用后端API
-    const mockUsers = [
-      {
-        id: '1',
-        email: 'admin@milktea.com',
-        password: 'admin123',
-        name: '管理员',
-        role: 'owner'
+    // 调用后端真实的登录API
+    const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      {
-        id: '2',
-        email: 'staff@milktea.com',
-        password: 'staff123',
-        name: '普通店员',
-        role: 'staff'
-      }
-    ];
+      body: JSON.stringify({ email, password }),
+    });
 
-    const user = mockUsers.find(u => u.email === email && u.password === password);
+    const data = await response.json();
 
-    if (!user) {
+    if (!response.ok) {
       return NextResponse.json(
-        { message: '邮箱或密码错误' },
-        { status: 401 }
+        { message: data.message || '登录失败' },
+        { status: response.status }
       );
     }
 
-    // 生成模拟token
-    const token = `mock-token-${user.id}-${Date.now()}`;
-
-    return NextResponse.json({
-      access_token: token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-      },
-    });
+    return NextResponse.json(data);
   } catch (error) {
+    console.error('Login API error:', error);
     return NextResponse.json(
-      { message: '登录请求处理失败' },
+      { message: '登录请求处理失败，请稍后重试' },
       { status: 500 }
     );
   }

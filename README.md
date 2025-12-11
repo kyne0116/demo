@@ -189,8 +189,8 @@ cd backend
 npm run db:test
 
 # 如果测试成功，运行迁移和种子数据
-npm run db:migrate
-npm run db:seed
+npm run migration:run
+npm run seed:run
 ```
 
 **SQLite环境 (开发测试)**
@@ -199,17 +199,17 @@ cd backend
 
 # SQLite不需要数据库连接测试
 # 直接运行迁移和种子数据
-npm run db:migrate
-npm run db:seed
+npm run migration:run
+npm run seed:run
 ```
 
 **数据库管理命令:**
 ```bash
-npm run db:test      # 测试数据库连接
-npm run db:check     # 检查数据库状态 (同db:test)
-npm run db:migrate   # 运行数据库迁移
-npm run db:seed      # 填充初始数据
-npm run db:reset     # 重置数据库 (如需要)
+npm run db:test         # 测试数据库连接
+npm run db:check        # 检查数据库状态 (同db:test)
+npm run migration:run   # 运行数据库迁移
+npm run seed:run        # 填充初始数据
+npm run seed:revert     # 清除测试数据
 ```
 
 #### 5. 启动服务
@@ -241,26 +241,30 @@ npm run start
 ### 数据初始化
 
 #### 管理员账户
-项目首次启动时会自动创建默认管理员账户：
+运行种子数据脚本后会自动创建以下测试账户：
 
-- **用户名**: admin
+**管理员账户**
+- **邮箱**: admin@example.com
+- **用户名**: admin (登录时可使用邮箱或用户名)
 - **密码**: admin123
 - **角色**: 系统管理员
 
-#### 示例数据
-运行种子脚本后会创建以下示例数据：
+**经理账户**
+- **邮箱**: manager@example.com
+- **密码**: manager123
+- **角色**: 门店经理
 
-- **产品数据**: 20+种奶茶和配料产品
-- **库存数据**: 基础原料库存记录
-- **会员数据**: 示例会员账户
-- **订单数据**: 历史订单记录
+**收银员账户**
+- **邮箱**: cashier@example.com
+- **密码**: cashier123
+- **角色**: 收银员
 
 #### 重置数据
 如需重新初始化数据：
 ```bash
 cd backend
-npm run db:reset
-npm run db:seed
+npm run seed:revert   # 清除测试数据
+npm run seed:run      # 重新创建测试数据
 ```
 
 ### 系统访问
@@ -275,10 +279,11 @@ npm run db:seed
 
 #### 管理员登录
 1. 访问管理员登录页面
-2. 使用默认账户登录：
-   - 用户名: `admin`
-   - 密码: `admin123`
-3. 登录后可以访问所有管理功能
+2. 使用以下任一账户登录：
+   - **管理员**: admin@example.com / admin123
+   - **经理**: manager@example.com / manager123
+   - **收银员**: cashier@example.com / cashier123
+3. 登录后根据角色权限访问相应功能
 
 #### 常用功能入口
 - **订单管理**: `/admin/orders`
