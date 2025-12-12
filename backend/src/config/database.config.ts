@@ -85,7 +85,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
         // 其他MySQL特定参数
         multipleStatements: false,
         dateStrings: true,
-        debug: this.configService.get('NODE_ENV') === 'development',
+        debug: false, // 关闭调试日志，避免输出底层协议细节
       },
     };
   }
