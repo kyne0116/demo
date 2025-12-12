@@ -113,9 +113,24 @@ npm run dev
 
 ### 访问系统
 
-- 前端地址: http://localhost:3000
-- 后端API: http://localhost:3001
-- 测试账号: admin@example.com / admin123
+#### 前端地址
+- **前端应用**: http://localhost:3000
+- **前端开发服务器**: http://localhost:3000 (开发模式)
+
+#### 后端地址
+- **后端API基础地址**: http://localhost:3001
+- **API文档地址**: http://localhost:3001/api/docs (Swagger/OpenAPI文档)
+- **API健康检查**: http://localhost:3001/health
+- **GraphQL Playground**: http://localhost:3001/graphql (如果启用)
+
+#### 测试账号
+- **管理员账号**: admin@example.com / admin123
+- **普通用户**: user@example.com / user123
+
+#### 端口说明
+- **3000**: Next.js前端开发服务器
+- **3001**: NestJS后端API服务器
+- **3306**: MySQL数据库端口 (如果本地运行)
 
 ## 许可证
 
